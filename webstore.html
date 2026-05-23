@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Store | Night Network</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Konfigurasi warna kustom Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#0a0a14',
+                        darkerbg: '#07070e',
+                        cardbg: '#111122',
+                        footerbg: '#050508'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .store-bg {
+            background-image: radial-gradient(circle at top, rgba(147, 51, 234, 0.15) 0%, transparent 50%), 
+                              url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTAgNDBoNDBNNDAgMHY0MCIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDMpIiBzdHJva2Utd2lkdGg9IjEiLz4KPC9zdmc+');
+        }
+        /* Custom scrollbar for modal */
+        .modal-scroll::-webkit-scrollbar { width: 6px; }
+        .modal-scroll::-webkit-scrollbar-track { background: #0a0a14; border-radius: 8px; }
+        .modal-scroll::-webkit-scrollbar-thumb { background: #4c1d95; border-radius: 8px; }
+    </style>
+</head>
+<body class="bg-darkbg text-slate-300 antialiased selection:bg-purple-600 selection:text-white">
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent py-5">
+        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-2 cursor-pointer">
+                <img src="nightnetwork.png" alt="Logo Night Network" class="w-10 h-10 rounded-lg shadow-lg shadow-purple-500/20 object-cover">
+                <span class="font-bold text-xl tracking-wider text-white hidden sm:block">
+                    NIGHT <span class="text-purple-500">NETWORK</span>
+                </span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-6 lg:gap-8 font-medium text-sm lg:text-base">
+                <a href="index.html" class="hover:text-purple-400 transition-colors">Beranda</a>
+                <a href="index.html#modes" class="hover:text-purple-400 transition-colors">Mode Game</a>
+                <a href="index.html#staff" class="hover:text-purple-400 transition-colors">Staff</a>
+                <a href="webstore.html" class="text-white font-bold border-b-2 border-purple-500 pb-1">Store</a>
+                <a href="https://discord.gg/x9TpXCgP7S" target="_blank" class="bg-purple-600 hover:bg-purple-500 text-white px-5 py-2 rounded-full font-semibold transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:shadow-[0_0_25px_rgba(147,51,234,0.5)]">
+                    Discord
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
+                <svg id="icon-menu" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                <svg id="icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-[#0d0d1a] border-b border-white/10 flex-col p-4 gap-4">
+            <a href="index.html" class="mobile-link text-white font-medium p-2 hover:bg-white/5 rounded-lg">Beranda</a>
+            <a href="index.html#modes" class="mobile-link text-white font-medium p-2 hover:bg-white/5 rounded-lg">Mode Game</a>
+            <a href="index.html#staff" class="mobile-link text-white font-medium p-2 hover:bg-white/5 rounded-lg">Staff</a>
+            <a href="webstore.html" class="mobile-link text-white font-bold p-2 bg-white/5 rounded-lg border-l-4 border-purple-500">Store</a>
+            <a href="https://discord.gg/x9TpXCgP7S" target="_blank" class="bg-purple-600 text-white p-3 rounded-lg font-bold text-center mt-2">Join Discord</a>
+        </div>
+    </nav>
+
+    <!-- Header Store Section -->
+    <header class="pt-32 pb-16 bg-darkerbg border-b border-white/5 relative overflow-hidden store-bg">
+        <div class="container mx-auto px-6 md:px-12 relative z-10 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-purple-900/30 border border-purple-500/30 text-purple-400 text-sm font-bold tracking-wider mb-4">
+                🛍️ OFFICIAL WEB STORE
+            </span>
+            <h1 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">
+                NIGHT NETWORK <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">SHOP</span>
+            </h1>
+            <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-4">
+                Kami menawarkan beberapa penjualan Rank & Item. Seluruh dana yang masuk digunakan untuk biaya hosting bulanan.
+            </p>
+            <div class="flex flex-col items-center justify-center gap-2 text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 px-4 py-3 rounded-xl max-w-xl mx-auto">
+                <div class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                    <span class="font-bold text-sm md:text-base">Semua Rank Bersifat PERMANEN!</span>
+                </div>
+                <span class="text-xs md:text-sm text-yellow-500/80">(Sekali beli, selamanya tidak akan hilang dari akunmu)</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Rank List Section -->
+    <section class="py-20 relative">
+        <div class="container mx-auto px-6 md:px-12">
+            
+            <div class="flex items-center gap-4 mb-10">
+                <div class="h-10 w-2 bg-purple-600 rounded-full"></div>
+                <h2 class="text-3xl font-bold text-white">Paket <span class="text-purple-400">Rank Premium</span></h2>
+            </div>
+
+            <!-- Grid Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- 1. MEMBER -->
+                <div class="bg-cardbg border border-white/10 rounded-3xl p-8 flex flex-col hover:-translate-y-2 hover:border-slate-500/50 transition-all duration-300 rank-card">
+                    <div class="text-slate-400 text-sm font-bold tracking-widest uppercase mb-2">Rank 1</div>
+                    <h3 class="text-3xl font-black text-white mb-2 rank-title">MEMBER</h3>
+                    <div class="text-2xl font-bold text-slate-300 mb-6 rank-price">Gratis (Free)</div>
+
+                    <div class="hidden md:block space-y-4 mb-8 flex-1 text-sm text-slate-300 rank-details relative z-10">
+                        <div class="font-bold text-white border-b border-white/10 pb-2">Rank Benefits:</div>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2"><span class="text-slate-500">✓</span> Claim: 1.000 Block</li>
+                            <li class="flex items-start gap-2"><span class="text-slate-500">✓</span> Limit Claim: 2 Wilayah</li>
+                            <li class="flex items-start gap-2"><span class="text-slate-500">✓</span> Sethome: 3</li>
+                            <li class="flex items-start gap-2"><span class="text-slate-500">✓</span> Kit Member</li>
+                            <li class="flex items-start gap-2"><span class="text-slate-500">✓</span> Player Vault: 1 Halaman</li>
+                            <li class="flex items-start gap-2"><span class="text-slate-500">✓</span> Auction: 3 Item</li>
+                        </ul>
+                        <div class="font-bold text-white border-b border-white/10 pb-2 pt-2">Fitur / Command:</div>
+                        <ul class="space-y-2 text-xs">
+                            <li class="flex items-start gap-2"><span class="text-slate-400">»</span> /spawn → kembali ke spawn</li>
+                            <li class="flex items-start gap-2"><span class="text-slate-400">»</span> /sethome & /home → set & teleport rumah</li>
+                            <li class="flex items-start gap-2"><span class="text-slate-400">»</span> /tpa & /tpaccept → TP ke pemain</li>
+                            <li class="flex items-start gap-2"><span class="text-slate-400">»</span> /rtp → Teleport acak</li>
+                            <li class="flex items-start gap-2"><span class="text-slate-400">»</span> /sit & /lay → Duduk dan rebahan</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="openModal(this)" class="md:hidden w-full py-3 mb-3 rounded-xl font-bold text-slate-400 bg-slate-500/10 border border-slate-500/30 hover:bg-slate-500/20 transition-colors relative z-10">Lihat Detail</button>
+                    <div class="text-center w-full py-3 rounded-xl font-bold text-slate-400 bg-white/5 border border-white/10 relative z-10">Otomatis Didapat</div>
+                </div>
+
+                <!-- 2. LUNAR -->
+                <div class="bg-cardbg border border-white/10 rounded-3xl p-8 flex flex-col hover:-translate-y-2 hover:border-blue-400/50 transition-all duration-300 rank-card">
+                    <div class="text-blue-400 text-sm font-bold tracking-widest uppercase mb-2">Rank 2</div>
+                    <h3 class="text-3xl font-black text-white mb-2 rank-title">LUNAR</h3>
+                    <div id="price-lunar" class="text-2xl font-bold text-green-400 mb-6 rank-price">Rp 10.000</div>
+
+                    <div class="hidden md:block space-y-4 mb-8 flex-1 text-sm text-slate-300 rank-details relative z-10">
+                        <div class="font-bold text-white border-b border-white/10 pb-2">Rank Benefits:</div>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2"><span class="text-blue-500">✓</span> Semua benefit MEMBER</li>
+                            <li class="flex items-start gap-2"><span class="text-blue-500">✓</span> Claim: 3.000 Block</li>
+                            <li class="flex items-start gap-2"><span class="text-blue-500">✓</span> Limit Claim: 5 Wilayah</li>
+                            <li class="flex items-start gap-2"><span class="text-blue-500">✓</span> Sethome: 5</li>
+                            <li class="flex items-start gap-2"><span class="text-blue-500">✓</span> Kit Lunar</li>
+                            <li class="flex items-start gap-2"><span class="text-blue-500">✓</span> Player Vault: 2 Halaman</li>
+                            <li class="flex items-start gap-2"><span class="text-blue-500">✓</span> Auction: 5 Item</li>
+                        </ul>
+                        <div class="font-bold text-white border-b border-white/10 pb-2 pt-2">Fitur / Command:</div>
+                        <ul class="space-y-2 text-xs">
+                            <li class="flex items-start gap-2"><span class="text-blue-400">»</span> /hat → pakai item jadi topi</li>
+                            <li class="flex items-start gap-2"><span class="text-blue-400">»</span> /feed → isi lapar langsung</li>
+                            <li class="flex items-start gap-2"><span class="text-blue-400">»</span> /recipe → Cek resep crafting</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="openModal(this)" class="md:hidden w-full py-3 mb-3 rounded-xl font-bold text-blue-400 bg-blue-500/10 border border-blue-500/30 hover:bg-blue-500/20 transition-colors relative z-10">Lihat Detail</button>
+                    <a href="#pembayaran" class="text-center w-full py-3 rounded-xl font-bold text-white bg-white/5 border border-white/10 hover:bg-green-600 hover:border-green-600 transition-colors relative z-10">Beli via WhatsApp</a>
+                </div>
+
+                <!-- 3. NOVA -->
+                <div class="bg-cardbg border border-white/10 rounded-3xl p-8 flex flex-col hover:-translate-y-2 hover:border-violet-400/50 transition-all duration-300 rank-card">
+                    <div class="text-violet-400 text-sm font-bold tracking-widest uppercase mb-2">Rank 3</div>
+                    <h3 class="text-3xl font-black text-white mb-2 rank-title">NOVA</h3>
+                    <div id="price-nova" class="text-2xl font-bold text-green-400 mb-6 rank-price">Rp 25.000</div>
+
+                    <div class="hidden md:block space-y-4 mb-8 flex-1 text-sm text-slate-300 rank-details relative z-10">
+                        <div class="font-bold text-white border-b border-white/10 pb-2">Rank Benefits:</div>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2"><span class="text-violet-500">✓</span> Semua benefit LUNAR</li>
+                            <li class="flex items-start gap-2"><span class="text-violet-500">✓</span> Claim: 5.000 Block</li>
+                            <li class="flex items-start gap-2"><span class="text-violet-500">✓</span> Limit Claim: 10 Wilayah</li>
+                            <li class="flex items-start gap-2"><span class="text-violet-500">✓</span> Sethome: 7</li>
+                            <li class="flex items-start gap-2"><span class="text-violet-500">✓</span> Kit Nova</li>
+                            <li class="flex items-start gap-2"><span class="text-violet-500">✓</span> Player Vault: 3 Halaman</li>
+                            <li class="flex items-start gap-2"><span class="text-violet-500">✓</span> Auction: 7 Item</li>
+                        </ul>
+                        <div class="font-bold text-white border-b border-white/10 pb-2 pt-2">Fitur / Command:</div>
+                        <ul class="space-y-2 text-xs">
+                            <li class="flex items-start gap-2"><span class="text-violet-400">»</span> /ec → buka ender chest</li>
+                            <li class="flex items-start gap-2"><span class="text-violet-400">»</span> /craft → crafting tanpa meja</li>
+                            <li class="flex items-start gap-2"><span class="text-violet-400">»</span> /condense → Ubah ingot jadi block</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="openModal(this)" class="md:hidden w-full py-3 mb-3 rounded-xl font-bold text-violet-400 bg-violet-500/10 border border-violet-500/30 hover:bg-violet-500/20 transition-colors relative z-10">Lihat Detail</button>
+                    <a href="#pembayaran" class="text-center w-full py-3 rounded-xl font-bold text-white bg-white/5 border border-white/10 hover:bg-green-600 hover:border-green-600 transition-colors relative z-10">Beli via WhatsApp</a>
+                </div>
+
+                <!-- 4. ECLIPSE -->
+                <div class="bg-cardbg border border-white/10 rounded-3xl p-8 flex flex-col hover:-translate-y-2 hover:border-purple-400/50 transition-all duration-300 rank-card">
+                    <div class="text-purple-400 text-sm font-bold tracking-widest uppercase mb-2">Rank 4</div>
+                    <h3 class="text-3xl font-black text-white mb-2 rank-title">ECLIPSE</h3>
+                    <div id="price-eclipse" class="text-2xl font-bold text-green-400 mb-6 rank-price">Rp 45.000</div>
+
+                    <div class="hidden md:block space-y-4 mb-8 flex-1 text-sm text-slate-300 rank-details relative z-10">
+                        <div class="font-bold text-white border-b border-white/10 pb-2">Rank Benefits:</div>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2"><span class="text-purple-500">✓</span> Semua benefit NOVA</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-500">✓</span> Claim: 10.000 Block</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-500">✓</span> Limit Claim: 20 Wilayah</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-500">✓</span> Sethome: 10</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-500">✓</span> Kit Eclipse</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-500">✓</span> Player Vault: 5 Halaman</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-500">✓</span> Auction: 10 Item</li>
+                        </ul>
+                        <div class="font-bold text-white border-b border-white/10 pb-2 pt-2">Fitur / Command:</div>
+                        <ul class="space-y-2 text-xs">
+                            <li class="flex items-start gap-2"><span class="text-purple-400">»</span> /fly → bisa terbang</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">»</span> /heal → heal darah (cooldown)</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">»</span> /clearinventory → Hapus item sampah</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">»</span> /anvil → pakai anvil dimana saja</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="openModal(this)" class="md:hidden w-full py-3 mb-3 rounded-xl font-bold text-purple-400 bg-purple-500/10 border border-purple-500/30 hover:bg-purple-500/20 transition-colors relative z-10">Lihat Detail</button>
+                    <a href="#pembayaran" class="text-center w-full py-3 rounded-xl font-bold text-white bg-white/5 border border-white/10 hover:bg-green-600 hover:border-green-600 transition-colors relative z-10">Beli via WhatsApp</a>
+                </div>
+
+                <!-- 5. VOID -->
+                <div class="bg-cardbg border border-white/10 rounded-3xl p-8 flex flex-col hover:-translate-y-2 hover:border-fuchsia-400/50 transition-all duration-300 rank-card">
+                    <div class="text-fuchsia-400 text-sm font-bold tracking-widest uppercase mb-2">Rank 5</div>
+                    <h3 class="text-3xl font-black text-white mb-2 rank-title">VOID</h3>
+                    <div id="price-void" class="text-2xl font-bold text-green-400 mb-6 rank-price">Rp 75.000</div>
+
+                    <div class="hidden md:block space-y-4 mb-8 flex-1 text-sm text-slate-300 rank-details relative z-10">
+                        <div class="font-bold text-white border-b border-white/10 pb-2">Rank Benefits:</div>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2"><span class="text-fuchsia-500">✓</span> Semua benefit ECLIPSE</li>
+                            <li class="flex items-start gap-2"><span class="text-fuchsia-500">✓</span> Claim: 20.000 Block</li>
+                            <li class="flex items-start gap-2"><span class="text-fuchsia-500">✓</span> Limit Claim: 26 Wilayah</li>
+                            <li class="flex items-start gap-2"><span class="text-fuchsia-500">✓</span> Sethome: 15</li>
+                            <li class="flex items-start gap-2"><span class="text-fuchsia-500">✓</span> Kit Void</li>
+                            <li class="flex items-start gap-2"><span class="text-fuchsia-500">✓</span> Player Vault: 8 Halaman</li>
+                            <li class="flex items-start gap-2"><span class="text-fuchsia-500">✓</span> Player Warp: 1 Warp</li>
+                        </ul>
+                        <div class="font-bold text-white border-b border-white/10 pb-2 pt-2">Fitur / Command:</div>
+                        <ul class="space-y-2 text-xs">
+                            <li class="flex items-start gap-2"><span class="text-fuchsia-400">»</span> /repair → perbaiki item (cooldown)</li>
+                            <li class="flex items-start gap-2"><span class="text-fuchsia-400">»</span> /top → Teleport ke permukaan atas</li>
+                            <li class="flex items-start gap-2"><span class="text-fuchsia-400">»</span> /jump → TP instan ke block ditatap</li>
+                            <li class="flex items-start gap-2"><span class="text-fuchsia-400">»</span> /nick → ganti nama</li>
+                            <li class="flex items-start gap-2"><span class="text-fuchsia-400">»</span> /tp → teleport ke player</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="openModal(this)" class="md:hidden w-full py-3 mb-3 rounded-xl font-bold text-fuchsia-400 bg-fuchsia-500/10 border border-fuchsia-500/30 hover:bg-fuchsia-500/20 transition-colors relative z-10">Lihat Detail</button>
+                    <a href="#pembayaran" class="text-center w-full py-3 rounded-xl font-bold text-white bg-white/5 border border-white/10 hover:bg-green-600 hover:border-green-600 transition-colors relative z-10">Beli via WhatsApp</a>
+                </div>
+
+                <!-- 6. EMPEROR -->
+                <div class="bg-cardbg border border-white/10 rounded-3xl p-8 flex flex-col hover:-translate-y-2 hover:border-amber-400/50 transition-all duration-300 rank-card">
+                    <div class="text-amber-400 text-sm font-bold tracking-widest uppercase mb-2">Rank 6</div>
+                    <h3 class="text-3xl font-black text-white mb-2 rank-title">EMPEROR</h3>
+                    <div id="price-emperor" class="text-2xl font-bold text-green-400 mb-6 rank-price">Rp 150.000</div>
+
+                    <div class="hidden md:block space-y-4 mb-8 flex-1 text-sm text-slate-300 rank-details relative z-10">
+                        <div class="font-bold text-white border-b border-white/10 pb-2">Rank Benefits:</div>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2"><span class="text-amber-500">✓</span> Semua benefit VOID</li>
+                            <li class="flex items-start gap-2"><span class="text-amber-500">✓</span> Claim: 30.000 Block</li>
+                            <li class="flex items-start gap-2"><span class="text-amber-500">✓</span> Limit Claim: 30 Wilayah</li>
+                            <li class="flex items-start gap-2"><span class="text-amber-500">✓</span> Sethome: 25</li>
+                            <li class="flex items-start gap-2"><span class="text-amber-500">✓</span> Kit Emperor</li>
+                            <li class="flex items-start gap-2"><span class="text-amber-500">✓</span> Player Vault: 12 Halaman</li>
+                            <li class="flex items-start gap-2"><span class="text-amber-500">✓</span> Player Warp: 3 Warp</li>
+                        </ul>
+                        <div class="font-bold text-white border-b border-white/10 pb-2 pt-2">Fitur / Command:</div>
+                        <ul class="space-y-2 text-xs">
+                            <li class="flex items-start gap-2"><span class="text-amber-400">»</span> /weather (atau /pweather) → ubah cuaca</li>
+                            <li class="flex items-start gap-2"><span class="text-amber-400">»</span> /ptime → atur waktu sendiri</li>
+                            <li class="flex items-start gap-2"><span class="text-amber-400">»</span> /stonecutter → akses stonecutter</li>
+                            <li class="flex items-start gap-2"><span class="text-amber-400">»</span> /grindstone → Buka grindstone</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="openModal(this)" class="md:hidden w-full py-3 mb-3 rounded-xl font-bold text-amber-400 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-colors relative z-10">Lihat Detail</button>
+                    <a href="#pembayaran" class="text-center w-full py-3 rounded-xl font-bold text-white bg-white/5 border border-white/10 hover:bg-green-600 hover:border-green-600 transition-colors relative z-10">Beli via WhatsApp</a>
+                </div>
+
+                <!-- 7. CELESTIAL (HIGHEST TIER) -->
+                <div class="bg-[#0d0a1e] border-2 border-purple-500 rounded-3xl p-8 flex flex-col hover:-translate-y-2 transition-all duration-300 relative overflow-hidden shadow-[0_0_25px_rgba(168,85,247,0.3)] rank-card">
+                    <!-- Glowing Background effect -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/10 pointer-events-none"></div>
+
+                    <div class="inline-flex max-w-max bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs font-bold tracking-widest uppercase mb-3 px-3 py-1 rounded-full relative z-10 shadow-lg shadow-purple-500/50">✨ Highest Tier</div>
+                    <h3 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-blue-300 mb-2 relative z-10 rank-title">CELESTIAL</h3>
+                    <div id="price-celestial" class="text-2xl font-bold text-white mb-6 relative z-10 rank-price">Rp 300.000</div>
+
+                    <div class="hidden md:block space-y-4 mb-8 flex-1 text-sm text-slate-200 rank-details relative z-10">
+                        <div class="font-bold text-white border-b border-purple-500/30 pb-2">Rank Benefits:</div>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2"><span class="text-purple-400">✓</span> Semua benefit EMPEROR</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">✓</span> Claim: 40.000 Block</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">✓</span> Limit Claim: 50 Wilayah</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">★</span> Sethome: Tak Terbatas (Unlimited)</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">✓</span> Kit Celestial</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">✓</span> Player Vault: 20 Halaman</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">✓</span> Player Warp: 5 Warp</li>
+                        </ul>
+                        <div class="font-bold text-white border-b border-purple-500/30 pb-2 pt-2">Fitur / Command:</div>
+                        <ul class="space-y-2 font-medium text-xs">
+                            <li class="flex items-start gap-2"><span class="text-purple-400">»</span> /repair all → perbaiki semua item</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">»</span> /repair armor → perbaiki armor</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">»</span> /ext → Memadamkan api di tubuh</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">»</span> /loom → Buka alat pembuat banner</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">»</span> /near → Lihat pemain terdekat</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">»</span> /seen → Cek kapan pemain terakhir online</li>
+                            <li class="flex items-start gap-2"><span class="text-purple-400">»</span> /cartographytable → akses map table</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="openModal(this)" class="md:hidden w-full py-3 mb-3 rounded-xl font-bold text-purple-300 bg-purple-600/30 border border-purple-500/50 hover:bg-purple-600/50 transition-colors relative z-10 shadow-lg shadow-purple-500/20">Lihat Detail</button>
+                    <a href="#pembayaran" class="text-center w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-green-600 hover:to-green-500 shadow-lg shadow-purple-500/40 transition-all relative z-10">Beli via WhatsApp</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Rank Details (Mobile) -->
+    <div id="rank-modal" class="fixed inset-0 z-[100] hidden items-center justify-center px-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="relative bg-cardbg border border-white/10 rounded-2xl w-full max-w-md max-h-[85vh] flex flex-col shadow-2xl overflow-hidden z-10 animate-[pulse_0.1s_ease-out_1]">
+            
+            <!-- Header -->
+            <div class="flex justify-between items-center p-5 border-b border-white/10 bg-darkbg">
+                <div>
+                    <h3 id="modal-title" class="text-2xl font-black text-white tracking-wide">Rank Name</h3>
+                    <div id="modal-price" class="text-lg font-bold text-green-400">Rp 0</div>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 p-2 rounded-lg transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+            </div>
+            
+            <!-- Body -->
+            <div id="modal-body" class="p-6 overflow-y-auto modal-scroll space-y-4 text-sm text-slate-300">
+                <!-- Content injected here via JS -->
+            </div>
+            
+            <!-- Footer -->
+            <div class="p-5 border-t border-white/10 bg-darkbg">
+                <a href="#pembayaran" onclick="closeModal()" class="block text-center w-full py-3 rounded-xl font-bold text-white bg-green-600 hover:bg-green-500 shadow-lg shadow-green-500/20 transition-colors">Lanjut Pembayaran</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Items Price List Section -->
+    <section class="py-16 bg-[#0c0c16] border-y border-white/5">
+        <div class="container mx-auto px-6 md:px-12">
+            
+            <div class="flex items-center gap-4 mb-8">
+                <div class="h-8 w-2 bg-blue-600 rounded-full"></div>
+                <h2 class="text-2xl font-bold text-white">Item <span class="text-blue-400">In-Game</span></h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Item: Bloodmoon Key -->
+                <div class="bg-cardbg border border-white/5 rounded-2xl p-6 opacity-60 relative overflow-hidden">
+                    <span class="absolute top-3 right-3 px-2 py-1 bg-red-600/30 text-red-400 border border-red-500/30 rounded text-[10px] font-bold uppercase animate-pulse">Coming Soon</span>
+                    <h3 class="text-xl font-bold text-white/50 mb-2">Bloodmoon Key</h3>
+                    <p class="text-slate-600 text-sm mb-4">Gunakan key ini untuk membuka crate khusus event Bloodmoon.</p>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
+                            <span class="font-bold text-slate-500">4x Key</span>
+                            <span id="price-bloodmoon-4x" class="font-bold text-red-400/40">Rp 1.000</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
+                            <span class="font-bold text-slate-500">64x Key</span>
+                            <span id="price-bloodmoon-64x" class="font-bold text-red-400/40">Rp 15.000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item: Night Super Key -->
+                <div class="bg-cardbg border border-white/5 rounded-2xl p-6 opacity-60 relative overflow-hidden">
+                    <span class="absolute top-3 right-3 px-2 py-1 bg-purple-600/30 text-purple-400 border border-purple-500/30 rounded text-[10px] font-bold uppercase animate-pulse">Coming Soon</span>
+                    <h3 class="text-xl font-bold text-white/50 mb-2">Night Super Key</h3>
+                    <p class="text-slate-600 text-sm mb-4">Key premium untuk hadiah luar biasa di crate Night Super.</p>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
+                            <span class="font-bold text-slate-500">5x Key</span>
+                            <span id="price-nightsuper-5x" class="font-bold text-purple-400/40">Rp 3.000</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
+                            <span class="font-bold text-slate-500">64x Key</span>
+                            <span id="price-nightsuper-64x" class="font-bold text-purple-400/40">Rp 37.000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item: Nyx (Uang) -->
+                <div class="bg-cardbg border border-white/10 rounded-2xl p-6 hover:border-green-500/50 transition-colors">
+                    <h3 class="text-xl font-bold text-white mb-2">Uang In-Game (Nyx)</h3>
+                    <p class="text-slate-400 text-sm mb-4">Beli mata uang server secara instan untuk kebutuhan trade/belanja.</p>
+                    <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
+                        <span id="conv-nyx" class="font-bold text-slate-300">500.000 Nyx</span>
+                        <span id="price-nyx" class="font-bold text-green-400">Rp 1.000</span>
+                    </div>
+                </div>
+
+                <!-- Item: Claims -->
+                <div class="bg-cardbg border border-white/10 rounded-2xl p-6 hover:border-cyan-500/50 transition-colors">
+                    <h3 class="text-xl font-bold text-white mb-2">Block Claim</h3>
+                    <p class="text-slate-400 text-sm mb-4">Beli block claim ekstra untuk memperluas area aman rumah/base Anda.</p>
+                    <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
+                        <span id="conv-claim" class="font-bold text-slate-300">300.000 Claims</span>
+                        <span id="price-claim" class="font-bold text-cyan-400">Rp 1.000</span>
+                    </div>
+                </div>
+
+                <!-- Item: Custom Armor -->
+                <div class="bg-cardbg border border-white/10 rounded-2xl p-6 hover:border-orange-500/50 transition-colors">
+                    <h3 class="text-xl font-bold text-white mb-2">Custom Armor V1</h3>
+                    <p class="text-slate-400 text-sm mb-4">Armor khusus V1 dengan ketahanan dan perlindungan yang sangat kuat.</p>
+                    <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
+                        <span class="font-bold text-slate-300">1 Set Armor</span>
+                        <span id="price-armor" class="font-bold text-orange-400">Rp 40.000</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Support / Payment Section -->
+    <section id="pembayaran" class="py-20 bg-darkbg text-center relative scroll-mt-10">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-[300px] bg-green-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="container mx-auto px-6 md:px-12 relative z-10">
+            <h2 class="text-3xl font-bold text-white mb-4">Cara Melakukan Pembelian</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto mb-8 leading-relaxed">
+                Pilih paket Rank atau Item yang ingin Anda beli. Segala bentuk transaksi <strong>HANYA</strong> dilakukan melalui kedua kontak WhatsApp resmi di bawah ini. Harap berhati-hati terhadap penipuan.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-6 max-w-3xl mx-auto">
+                <!-- WA Owner -->
+                <a id="wa-owner" href="https://wa.me/60167586067" target="_blank" rel="noopener noreferrer" class="flex-1 bg-[#121220] hover:bg-[#1a1a2e] border border-white/10 hover:border-green-500/50 p-6 rounded-2xl transition-all duration-300 group flex flex-col items-center">
+                    <div class="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-green-500 group-hover:text-white transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-1">Chat Owner</h3>
+                    <p class="text-sm text-slate-400 mb-2">Kaitou</p>
+                    <p class="text-green-400 font-mono font-bold">+60 16-758 6067</p>
+                </a>
+
+                <!-- WA Dev -->
+                <a id="wa-dev" href="https://wa.me/628979771541" target="_blank" rel="noopener noreferrer" class="flex-1 bg-[#121220] hover:bg-[#1a1a2e] border border-white/10 hover:border-green-500/50 p-6 rounded-2xl transition-all duration-300 group flex flex-col items-center">
+                    <div class="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-green-500 group-hover:text-white transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-1">Chat Dev</h3>
+                    <p class="text-sm text-slate-400 mb-2">Menki</p>
+                    <p class="text-green-400 font-mono font-bold">08979771541</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-footerbg pt-16 pb-8 border-t border-white/5">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="nightnetwork.png" alt="Logo Night Network" class="w-8 h-8 rounded object-cover">
+                        <span class="font-bold text-xl text-white">NIGHT NETWORK</span>
+                    </div>
+                    <p class="text-slate-400 mb-6 max-w-sm">
+                        Server Minecraft Indonesia yang berdedikasi untuk memberikan pengalaman bermain terbaik untuk komunitas.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4">Tautan Penting</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="index.html" class="hover:text-purple-400 transition-colors">Beranda</a></li>
+                        <li><a href="index.html#modes" class="hover:text-purple-400 transition-colors">Mode Game</a></li>
+                        <li><a href="index.html#staff" class="hover:text-purple-400 transition-colors">Tim Staff</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="#" class="hover:text-purple-400 transition-colors">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition-colors">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition-colors">Kebijakan Refund</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-slate-500 text-sm text-center md:text-left">
+                    &copy; 2026 Night Network. Hak Cipta Dilindungi.<br/>
+                    <span class="text-xs">Kami tidak berafiliasi dengan Mojang AB.</span>
+                </p>
+                <div class="text-slate-500 text-sm">
+                    Dibuat dengan <span class="text-red-500">♥</span> untuk komunitas MC.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script JavaScript Vanilla -->
+    <script>
+        // =============================================
+        // HARGA — ubah di sini untuk update semua tampilan
+        // =============================================
+        const prices = {
+            // Rank
+            lunar:     "Rp 10.000",
+            nova:      "Rp 25.000",
+            eclipse:   "Rp 45.000",
+            void:      "Rp 75.000",
+            emperor:   "Rp 150.000",
+            celestial: "Rp 300.000",
+            // Item conv 
+            bloodmoon4x:    "Rp 1.000",
+            bloodmoon64x:   "Rp 15.000",
+            nightsuper5x:   "Rp 3.000",
+            nightsuper64x:  "Rp 37.000",
+            nyx:            "Rp 1.000",
+            claim:          "Rp 1.000",
+            armor:          "Rp 40.000",
+        };
+        // Conversion rate, dapet berapa per anu lah
+        const conversions = {
+            nyx:   "50.000 Nyx",
+            claim: "1000 Claims",
+        };
+
+        document.getElementById('conv-nyx').textContent   = conversions.nyx;
+        document.getElementById('conv-claim').textContent = conversions.claim;
+
+        document.getElementById('price-lunar').textContent     = prices.lunar;
+        document.getElementById('price-nova').textContent      = prices.nova;
+        document.getElementById('price-eclipse').textContent   = prices.eclipse;
+        document.getElementById('price-void').textContent      = prices.void;
+        document.getElementById('price-emperor').textContent   = prices.emperor;
+        document.getElementById('price-celestial').textContent = prices.celestial;
+        document.getElementById('price-bloodmoon-4x').textContent  = prices.bloodmoon4x;
+        document.getElementById('price-bloodmoon-64x').textContent = prices.bloodmoon64x;
+        document.getElementById('price-nightsuper-5x').textContent  = prices.nightsuper5x;
+        document.getElementById('price-nightsuper-64x').textContent = prices.nightsuper64x;
+        document.getElementById('price-nyx').textContent           = prices.nyx;
+        document.getElementById('price-claim').textContent         = prices.claim;
+        document.getElementById('price-armor').textContent         = prices.armor;
+
+        const waNumber = "60167586067";
+        const waNumberDev = "628979771541";
+        const waGreetOwner = "Halo, saya ingin melakukan pembelian di Night Network. Mohon bantuannya. Terima kasih!";
+        const waGreetDev = "Halo, saya ingin melakukan pembelian di Night Network. Mohon bantuannya. Terima kasih!";
+
+        document.getElementById('wa-owner').href = `https://wa.me/${waNumber}?text=${encodeURIComponent(waGreetOwner)}`;
+        document.getElementById('wa-dev').href = `https://wa.me/${waNumberDev}?text=${encodeURIComponent(waGreetDev)}`;
+
+        document.querySelectorAll('.rank-card').forEach(card => {
+            const buyLink = [...card.querySelectorAll('a')].find(a => a.textContent.trim().startsWith('Beli via WhatsApp'));
+            if (!buyLink) return;
+            const rankName = card.querySelector('.rank-title')?.innerText.trim() ?? '';
+            const rankPrice = card.querySelector('.rank-price')?.innerText.trim() ?? '';
+            const msg = `Halo Night Network, saya ingin membeli Rank *${rankName}* seharga *${rankPrice}*. Mohon konfirmasi pembelian. Terima kasih!`;
+            buyLink.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+            buyLink.target = '_blank';
+            buyLink.rel = 'noopener noreferrer';
+            buyLink.removeAttribute('onclick');
+        });
+
+        // Script Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-[#0a0a14]/90', 'backdrop-blur-md', 'border-b', 'border-white/10', 'py-3');
+                navbar.classList.remove('bg-transparent', 'py-5');
+            } else {
+                navbar.classList.remove('bg-[#0a0a14]/90', 'backdrop-blur-md', 'border-b', 'border-white/10', 'py-3');
+                navbar.classList.add('bg-transparent', 'py-5');
+            }
+        });
+
+        // Script Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const iconMenu = document.getElementById('icon-menu');
+        const iconClose = document.getElementById('icon-close');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+            iconMenu.classList.toggle('hidden');
+            iconClose.classList.toggle('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // Script Modal Logic untuk Detail Rank di Layar HP
+        const rankModal = document.getElementById('rank-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalPrice = document.getElementById('modal-price');
+        const modalBody = document.getElementById('modal-body');
+
+        function openModal(btnElement) {
+            // Ambil element card tempat tombol ini berada
+            const card = btnElement.closest('.rank-card');
+            
+            // Ambil data judul, harga, dan html isi dari detailnya
+            const title = card.querySelector('.rank-title').innerText;
+            const price = card.querySelector('.rank-price').innerText;
+            const detailsHtml = card.querySelector('.rank-details').innerHTML;
+
+            // Masukkan data ke dalam Modal
+            modalTitle.innerText = title;
+            modalPrice.innerText = price;
+            modalBody.innerHTML = detailsHtml;
+
+            // Tampilkan Modal & kunci scroll background
+            rankModal.classList.remove('hidden');
+            rankModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            // Sembunyikan Modal & buka kunci scroll background
+            rankModal.classList.remove('flex');
+            rankModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+    </script>
+</body>
+</html>

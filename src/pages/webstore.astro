@@ -3,8 +3,10 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import RankCard from '../components/RankCard.astro';
+import ItemCard from '../components/ItemCard.astro';
 import ranks from '../data/ranks.json';
-import { prices, conversions, waNumber, waNumberDev, waGreetOwner, waGreetDev } from '../config/store.ts';
+import items from '../data/items.json';
+import { waNumber, waNumberDev, waGreetOwner, waGreetDev } from '../config/store.ts';
 
 const waOwnerHref = `https://wa.me/${waNumber}?text=${encodeURIComponent(waGreetOwner)}`;
 const waDevHref   = `https://wa.me/${waNumberDev}?text=${encodeURIComponent(waGreetDev)}`;
@@ -77,71 +79,7 @@ const waDevHref   = `https://wa.me/${waNumberDev}?text=${encodeURIComponent(waGr
         <h2 class="text-2xl font-bold text-white">Item <span class="text-blue-400">In-Game</span></h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        <!-- Bloodmoon Key -->
-        <div class="bg-cardbg border border-white/5 rounded-2xl p-6 opacity-60 relative overflow-hidden">
-          <span class="absolute top-3 right-3 px-2 py-1 bg-red-600/30 text-red-400 border border-red-500/30 rounded text-[10px] font-bold uppercase animate-pulse">Coming Soon</span>
-          <h3 class="text-xl font-bold text-white/50 mb-2">Bloodmoon Key</h3>
-          <p class="text-slate-600 text-sm mb-4">Gunakan key ini untuk membuka crate khusus event Bloodmoon.</p>
-          <div class="flex flex-col gap-2">
-            <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
-              <span class="font-bold text-slate-500">4x Key</span>
-              <span class="font-bold text-red-400/40">{prices.bloodmoon4x}</span>
-            </div>
-            <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
-              <span class="font-bold text-slate-500">64x Key</span>
-              <span class="font-bold text-red-400/40">{prices.bloodmoon64x}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Night Super Key -->
-        <div class="bg-cardbg border border-white/5 rounded-2xl p-6 opacity-60 relative overflow-hidden">
-          <span class="absolute top-3 right-3 px-2 py-1 bg-purple-600/30 text-purple-400 border border-purple-500/30 rounded text-[10px] font-bold uppercase animate-pulse">Coming Soon</span>
-          <h3 class="text-xl font-bold text-white/50 mb-2">Night Super Key</h3>
-          <p class="text-slate-600 text-sm mb-4">Key premium untuk hadiah luar biasa di crate Night Super.</p>
-          <div class="flex flex-col gap-2">
-            <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
-              <span class="font-bold text-slate-500">5x Key</span>
-              <span class="font-bold text-purple-400/40">{prices.nightsuper5x}</span>
-            </div>
-            <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
-              <span class="font-bold text-slate-500">64x Key</span>
-              <span class="font-bold text-purple-400/40">{prices.nightsuper64x}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Nyx -->
-        <div class="bg-cardbg border border-white/10 rounded-2xl p-6 hover:border-green-500/50 transition-colors">
-          <h3 class="text-xl font-bold text-white mb-2">Uang In-Game (Nyx)</h3>
-          <p class="text-slate-400 text-sm mb-4">Beli mata uang server secara instan untuk kebutuhan trade/belanja.</p>
-          <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
-            <span class="font-bold text-slate-300">{conversions.nyx}</span>
-            <span class="font-bold text-green-400">{prices.nyx}</span>
-          </div>
-        </div>
-
-        <!-- Block Claim -->
-        <div class="bg-cardbg border border-white/10 rounded-2xl p-6 hover:border-cyan-500/50 transition-colors">
-          <h3 class="text-xl font-bold text-white mb-2">Block Claim</h3>
-          <p class="text-slate-400 text-sm mb-4">Beli block claim ekstra untuk memperluas area aman rumah/base Anda.</p>
-          <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
-            <span class="font-bold text-slate-300">{conversions.claim}</span>
-            <span class="font-bold text-cyan-400">{prices.claim}</span>
-          </div>
-        </div>
-
-        <!-- Custom Armor -->
-        <div class="bg-cardbg border border-white/10 rounded-2xl p-6 hover:border-orange-500/50 transition-colors">
-          <h3 class="text-xl font-bold text-white mb-2">Custom Armor V1</h3>
-          <p class="text-slate-400 text-sm mb-4">Armor khusus V1 dengan ketahanan dan perlindungan yang sangat kuat.</p>
-          <div class="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
-            <span class="font-bold text-slate-300">1 Set Armor</span>
-            <span class="font-bold text-orange-400">{prices.armor}</span>
-          </div>
-        </div>
-
+        {items.map(item => <ItemCard item={item} />)}
       </div>
     </div>
   </section>

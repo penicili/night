@@ -1,0 +1,418 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { serverIp, bedrockIp, bedrockPort } from '../config/server.ts';
+
+const bedrockDeeplink = `minecraft://?addExternalServer=NightNetwork|${bedrockIp}:${bedrockPort}`;
+---
+
+<Layout title="Night Network | Server Minecraft Indonesia">
+  <Navbar page="home" />
+
+  <!-- Hero Section -->
+  <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex items-center justify-center min-h-[90vh]">
+    <div class="absolute inset-0 z-0">
+      <div class="absolute inset-0 bg-gradient-to-b from-purple-900/10 to-transparent sm:hidden pointer-events-none z-0"></div>
+      <div class="hidden sm:block absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[500px] bg-purple-600/20 blur-[100px] rounded-full pointer-events-none"></div>
+      <div class="hidden sm:block absolute bottom-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 blur-[100px] rounded-full pointer-events-none"></div>
+      <div class="absolute inset-0 minecraft-grid opacity-30 sm:opacity-50 z-0"></div>
+    </div>
+
+    <div class="container relative z-10 mx-auto px-6 md:px-12 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm font-medium mb-6 text-purple-300">
+        <span id="status-dot" class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+        <span id="player-count">Memuat status server...</span>
+      </div>
+
+      <h1 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight drop-shadow-lg">
+        Petualangan <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">Dimulai</span> Di Sini.
+      </h1>
+
+      <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+        Bergabunglah dengan Night Network, server Minecraft terbaik di Indonesia dengan komunitas yang ramah, mode permainan unik, dan tanpa lag.
+      </p>
+
+      <div class="flex flex-col items-center justify-center gap-4">
+        <div class="flex flex-col sm:flex-row gap-4 w-full justify-center flex-wrap">
+          <button id="copy-btn" class="group relative flex items-center justify-between gap-4 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-purple-500/50 p-2 pr-6 rounded-2xl transition-all duration-300 w-full sm:w-auto overflow-hidden min-h-[72px]">
+            <div class="bg-purple-600 text-white p-3 rounded-xl group-hover:scale-105 transition-transform">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="4" height="6" x="2" y="6" rx="2"/><rect width="4" height="6" x="18" y="6" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><line x1="6" x2="6.01" y1="18" y2="18"/><line x1="10" x2="10.01" y1="18" y2="18"/></svg>
+            </div>
+            <div class="flex flex-col items-start text-left">
+              <span class="text-xs text-slate-400 font-medium uppercase tracking-wider">Salin IP Server</span>
+              <span class="text-white font-bold text-sm sm:text-base md:text-lg font-mono">{serverIp}</span>
+            </div>
+            <div class="ml-4 pl-4 border-l border-white/10 text-purple-400 flex items-center justify-center">
+              <svg id="icon-copy" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:text-white transition-colors"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <svg id="icon-check" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400 hidden"><path d="M20 6 9 17l-5-5"/></svg>
+            </div>
+          </button>
+
+          <a href="/webstore" class="flex items-center justify-center gap-2 bg-white/10 text-white border border-white/10 hover:bg-white/20 hover:border-purple-500/50 px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 w-full sm:w-auto h-full min-h-[72px]">
+            Kunjungi Store
+          </a>
+
+          <a href="https://trakteer.id/nightnetwork/gift" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-[#be1e2d] text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-[#a31926] transition-colors w-full sm:w-auto h-full min-h-[72px] shadow-[0_0_15px_rgba(190,30,45,0.3)]">
+            Traktir Kami
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </a>
+        </div>
+
+        <a href={bedrockDeeplink} class="text-sm text-slate-400 hover:text-purple-400 underline decoration-purple-500/30 underline-offset-4 transition-colors flex items-center gap-1 mt-2">
+          Main di HP/Windows? Buka Minecraft Bedrock Otomatis
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About/Features Section -->
+  <section id="about" class="py-20 bg-darkerbg relative border-y border-white/5">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Mengapa Memilih Kami?</h2>
+        <div class="w-20 h-1 bg-purple-600 mx-auto rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white/5 border border-white/5 p-8 rounded-2xl hover:-translate-y-2 transition-all duration-300 hover:border-purple-500/30 group">
+          <div class="w-14 h-14 bg-purple-600/20 text-purple-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-purple-600 group-hover:text-white transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2-1 4-2 7-2 2.5 0 4.5 1 6.5 2a1 1 0 0 1 1 1v7z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Anti-Cheat Premium</h3>
+          <p class="text-slate-400 leading-relaxed">Lingkungan bermain yang adil tanpa cheater. Sistem kami memonitor dan menindak pelanggar secara otomatis 24/7.</p>
+        </div>
+
+        <div class="bg-white/5 border border-white/5 p-8 rounded-2xl hover:-translate-y-2 transition-all duration-300 hover:border-indigo-500/30 group">
+          <div class="w-14 h-14 bg-indigo-600/20 text-indigo-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Komunitas Ramah</h3>
+          <p class="text-slate-400 leading-relaxed">Temukan teman baru! Staff aktif dan pemain yang saling membantu menciptakan lingkungan yang positif untuk semua umur.</p>
+        </div>
+
+        <div class="bg-white/5 border border-white/5 p-8 rounded-2xl hover:-translate-y-2 transition-all duration-300 hover:border-blue-500/30 group">
+          <div class="w-14 h-14 bg-blue-600/20 text-blue-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="10" y1="12" y2="12"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="15" x2="15.01" y1="13" y2="13"/><line x1="18" x2="18.01" y1="11" y2="11"/><rect width="20" height="12" x="2" y="6" rx="2"/></svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Server Bebas Lag</h3>
+          <p class="text-slate-400 leading-relaxed">Di-hosting di server berkinerja tinggi dengan optimisasi khusus untuk memastikan TPS yang stabil meskipun ramai pemain.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Game Modes Section -->
+  <section id="modes" class="py-24 relative">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+        <div>
+          <h2 class="text-3xl md:text-5xl font-black text-white mb-4">Mode <span class="text-purple-500">Permainan</span></h2>
+          <p class="text-slate-400 max-w-xl">Pilih petualanganmu. Nikmati mode Survival yang cozy, rasakan keseruan World Custom yang bebas, atau nantikan mode RPG epik kami!</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Survival -->
+        <div class="group relative rounded-3xl overflow-hidden bg-cardbg border border-white/10 min-h-[380px] sm:min-h-[420px] h-full flex flex-col justify-end p-6 md:p-8">
+          <div class="absolute inset-0 bg-gradient-to-t from-darkbg via-darkbg/80 to-transparent z-10"></div>
+          <div class="absolute inset-0 bg-green-900/30 opacity-50 group-hover:scale-105 transition-transform duration-500"></div>
+          <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-green-500/20 via-transparent to-transparent"></div>
+          <div class="relative z-20 mt-auto">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="bg-green-500 p-2 rounded-lg text-white shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <h3 class="text-2xl md:text-3xl font-bold text-white leading-tight">Survival</h3>
+            </div>
+            <p class="text-slate-300 mb-6 max-w-md text-sm md:text-base">Mengambil tema <strong>eco dan cozy</strong>, di mana kamu bisa bersantai memancing dengan event tertentu, serta menikmati berbagai event menarik lainnya!</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-white/10 rounded-full text-xs font-medium text-white border border-white/5 whitespace-nowrap">Eco & Cozy</span>
+              <span class="px-3 py-1 bg-white/10 rounded-full text-xs font-medium text-white border border-white/5 whitespace-nowrap">Fishing Event</span>
+              <span class="px-3 py-1 bg-white/10 rounded-full text-xs font-medium text-white border border-white/5 whitespace-nowrap">Mini Events</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- World Custom -->
+        <div class="group relative rounded-3xl overflow-hidden bg-cardbg border border-white/5 min-h-[380px] sm:min-h-[420px] h-full flex flex-col justify-end p-6 md:p-8 opacity-80 hover:opacity-100 transition-opacity">
+          <div class="absolute inset-0 bg-gradient-to-t from-darkbg via-darkbg/90 to-darkbg/60 z-10"></div>
+          <div class="absolute inset-0 bg-black/40 z-[15] backdrop-blur-sm flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/50 mb-2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span class="text-white/70 font-bold tracking-wider uppercase text-sm text-center px-4">Sedang Dalam Pengembangan</span>
+          </div>
+          <div class="relative z-20 mt-auto">
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+              <div class="bg-red-600 p-2 rounded-lg text-white shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>
+              </div>
+              <h3 class="text-2xl md:text-3xl font-bold text-white leading-tight">World Custom</h3>
+              <span class="px-2 py-1 bg-red-600/30 text-red-400 border border-red-500/30 rounded text-[10px] font-bold uppercase animate-pulse">Coming Soon</span>
+            </div>
+            <p class="text-slate-400 mb-6 max-w-md text-sm md:text-base">Mode <strong>Anarki</strong> sejati! Dapatkan kebebasan penuh di mana kamu <strong>bebas grief</strong>, bisa menjadi <strong>superhero</strong>, dan bermain tanpa batasan aturan.</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-slate-400 whitespace-nowrap">Anarchy</span>
+              <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-slate-400 whitespace-nowrap">Bebas Grief</span>
+              <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-slate-400 whitespace-nowrap">Superhero</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MMO RPG -->
+        <div class="group relative rounded-3xl overflow-hidden bg-cardbg border border-white/5 min-h-[380px] sm:min-h-[420px] h-full flex flex-col justify-end p-6 md:p-8 opacity-80 hover:opacity-100 transition-opacity">
+          <div class="absolute inset-0 bg-gradient-to-t from-darkbg via-darkbg/90 to-darkbg/60 z-10"></div>
+          <div class="absolute inset-0 bg-black/40 z-[15] backdrop-blur-sm flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/50 mb-2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span class="text-white/70 font-bold tracking-wider uppercase text-sm text-center px-4">Sedang Dalam Pengembangan</span>
+          </div>
+          <div class="relative z-20 mt-auto">
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+              <div class="bg-purple-600 p-2 rounded-lg text-white shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/><path d="M14.5 6.5L18 3h3v3l-3.5 3.5"/><path d="M5 14l4 4"/><path d="M7 17l-3 3"/><path d="M3 19l2 2"/></svg>
+              </div>
+              <h3 class="text-2xl md:text-3xl font-bold text-white leading-tight">MMO RPG</h3>
+              <span class="px-2 py-1 bg-purple-600/30 text-purple-400 border border-purple-500/30 rounded text-[10px] font-bold uppercase animate-pulse">Coming Soon</span>
+            </div>
+            <p class="text-slate-400 mb-6 max-w-md text-sm md:text-base">Jelajahi dunia dengan <strong>custom senjata legendaris</strong> dan lawan <strong>mob boss</strong> menarik. Selesaikan <em>Main Quests</em> cerita Night Network melalui <strong>NPC interaktif</strong>!</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-slate-400 whitespace-nowrap">Legendary Weapons</span>
+              <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-slate-400 whitespace-nowrap">Epic Bosses</span>
+              <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-slate-400 whitespace-nowrap">Story Quests</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guide Section -->
+  <section id="guide" class="py-20 bg-[#0c0c16] relative border-t border-white/5">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Cara Memulai <span class="text-purple-500">Bermain</span></h2>
+        <div class="w-20 h-1 bg-purple-600 mx-auto rounded-full mb-6"></div>
+        <p class="text-slate-400 max-w-2xl mx-auto">Ikuti panduan mudah 4 langkah ini untuk bergabung ke dalam dunia Night Network dan mulai petualangan pertamamu.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-darkbg border border-white/10 p-6 rounded-2xl relative">
+          <div class="absolute -top-4 -left-4 w-10 h-10 bg-purple-600 text-white font-black text-xl rounded-full flex items-center justify-center border-4 border-[#0c0c16]">1</div>
+          <div class="text-purple-400 mb-4 mt-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Salin IP Server</h3>
+          <p class="text-sm text-slate-400">Salin IP <span class="text-purple-300 font-mono bg-purple-900/30 px-1 rounded">{serverIp}</span> ke clipboard-mu.</p>
+        </div>
+
+        <div class="bg-darkbg border border-white/10 p-6 rounded-2xl relative">
+          <div class="absolute -top-4 -left-4 w-10 h-10 bg-indigo-600 text-white font-black text-xl rounded-full flex items-center justify-center border-4 border-[#0c0c16]">2</div>
+          <div class="text-indigo-400 mb-4 mt-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><path d="M12 12h.01"/><path d="M17 12h.01"/><path d="M7 12h.01"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Buka Minecraft</h3>
+          <p class="text-sm text-slate-400">Buka game Minecraft (bisa pakai Java Edition atau Bedrock Edition dari HP).</p>
+        </div>
+
+        <div class="bg-darkbg border border-white/10 p-6 rounded-2xl relative">
+          <div class="absolute -top-4 -left-4 w-10 h-10 bg-blue-600 text-white font-black text-xl rounded-full flex items-center justify-center border-4 border-[#0c0c16]">3</div>
+          <div class="text-blue-400 mb-4 mt-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Tambah Server</h3>
+          <p class="text-sm text-slate-400">Pilih menu "Multiplayer" lalu "Add Server". Tempelkan IP yang tadi disalin, lalu Join.</p>
+        </div>
+
+        <div class="bg-darkbg border border-white/10 p-6 rounded-2xl relative">
+          <div class="absolute -top-4 -left-4 w-10 h-10 bg-green-600 text-white font-black text-xl rounded-full flex items-center justify-center border-4 border-[#0c0c16]">4</div>
+          <div class="text-green-400 mb-4 mt-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Register & Login</h3>
+          <p class="text-sm text-slate-400">Ketik <code class="text-green-300">/register &lt;password&gt; &lt;password&gt;</code> di chat. Jika sudah pernah main, gunakan <code class="text-green-300">/login &lt;password&gt;</code>.</p>
+        </div>
+      </div>
+
+      <div class="text-center mt-12">
+        <a href="/started" class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white px-8 py-4 rounded-full font-bold transition-all shadow-[0_0_20px_rgba(147,51,234,0.4)] hover:shadow-[0_0_30px_rgba(147,51,234,0.6)]">
+          Lihat Daftar Command Lengkap
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Economy Section -->
+  <section id="economy" class="py-24 relative opacity-70">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="flex flex-col md:flex-row justify-between items-center mb-16 gap-6 text-center md:text-left">
+        <div>
+          <div class="flex items-center gap-3 mb-4 justify-center md:justify-start">
+            <h2 class="text-3xl md:text-5xl font-black text-white">Statistik <span class="text-green-500">Ekonomi</span></h2>
+            <span class="px-2 py-1 bg-green-600/30 text-green-400 border border-green-500/30 rounded text-[10px] font-bold uppercase animate-pulse self-center">Coming Soon</span>
+          </div>
+          <p class="text-slate-400 max-w-xl">Pantau pergerakan ekonomi server secara real-time. Lihat daftar pemain terkaya, saldo in-game (Nyx), dan statistik ekonomi lainnya secara langsung melalui Web Map Ekonomi kami.</p>
+        </div>
+        <button disabled class="shrink-0 bg-green-600/30 text-green-400/50 px-8 py-4 rounded-full font-bold flex items-center gap-2 cursor-not-allowed border border-green-500/20">
+          Lihat Papan Peringkat
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </button>
+      </div>
+
+      <div class="w-full bg-cardbg border border-white/5 rounded-3xl p-4 md:p-8 relative overflow-hidden flex flex-col items-center justify-center min-h-[350px] group">
+        <div class="absolute inset-0 bg-gradient-to-br from-green-900/10 to-transparent z-0"></div>
+        <div class="absolute inset-0 minecraft-grid opacity-10 z-0"></div>
+        <div class="absolute inset-0 bg-black/50 z-20 backdrop-blur-sm flex flex-col items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/30 mb-4"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <p class="text-white/60 font-bold tracking-wider uppercase text-base mb-1">Sedang Dalam Pengembangan</p>
+          <p class="text-white/30 text-sm">Dashboard ekonomi akan segera hadir</p>
+        </div>
+        <div class="relative z-10 text-center">
+          <div class="w-24 h-24 bg-green-500/5 border border-green-500/20 text-green-400/40 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3 class="text-3xl font-bold text-white/50 mb-3">Live Economy Tracker</h3>
+          <p class="text-slate-600 max-w-md mx-auto mb-8">Portal ekonomi server tersedia! Ketahui posisi saldo Anda dibandingkan dengan pemain lainnya dalam komunitas Night Network.</p>
+          <button disabled class="inline-flex items-center gap-2 text-green-400/30 bg-green-600/10 border border-green-500/20 px-6 py-3 rounded-xl font-bold cursor-not-allowed">
+            Buka Portal Ekonomi
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-20 bg-darkerbg relative border-t border-white/5">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Pertanyaan <span class="text-purple-500">Sering Diajukan</span></h2>
+        <div class="w-20 h-1 bg-purple-600 mx-auto rounded-full mb-6"></div>
+        <p class="text-slate-400 max-w-2xl mx-auto">Bingung tentang suatu hal? Temukan jawabannya di sini.</p>
+      </div>
+
+      <div class="max-w-3xl mx-auto space-y-4">
+        <details class="group bg-darkbg border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-purple-500/30 transition-colors list-none">
+          <summary class="flex justify-between items-center font-bold text-white text-lg list-none outline-none">
+            <span>Apakah server ini gratis untuk dimainkan?</span>
+            <span class="transition-transform duration-300 group-open:rotate-180 text-purple-400">
+              <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-slate-400 mt-4 leading-relaxed">
+            Tentu saja! Bermain di Night Network adalah 100% gratis untuk semua orang. Jika Anda ingin mendukung operasional server, Anda bisa membeli paket Donatur/Rank di <a href="/webstore" class="text-purple-400 hover:text-purple-300 underline transition-colors">Web Store kami</a>.
+          </p>
+        </details>
+
+        <details class="group bg-darkbg border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-purple-500/30 transition-colors list-none">
+          <summary class="flex justify-between items-center font-bold text-white text-lg list-none outline-none">
+            <span>Versi Minecraft berapa yang digunakan?</span>
+            <span class="transition-transform duration-300 group-open:rotate-180 text-purple-400">
+              <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-slate-400 mt-4 leading-relaxed">
+            Kami sangat menyarankan Anda menggunakan Minecraft versi <strong>1.20.x</strong> untuk fitur yang paling optimal. Namun, Anda juga dapat mencoba masuk menggunakan beberapa versi di bawah atau di atasnya.
+          </p>
+        </details>
+
+        <details class="group bg-darkbg border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-purple-500/30 transition-colors list-none">
+          <summary class="flex justify-between items-center font-bold text-white text-lg list-none outline-none">
+            <span>Apakah saya bisa main lewat HP (Bedrock)?</span>
+            <span class="transition-transform duration-300 group-open:rotate-180 text-purple-400">
+              <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-slate-400 mt-4 leading-relaxed">
+            Ya! Server kami mendukung <em>Cross-play</em>. Pemain dari HP (Android/iOS) atau PC Windows 10/11 bisa bergabung menggunakan IP: <code class="text-purple-300">{bedrockIp}</code> dengan Port: <code class="text-purple-300">{bedrockPort}</code>.
+          </p>
+        </details>
+
+        <details class="group bg-darkbg border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-purple-500/30 transition-colors list-none">
+          <summary class="flex justify-between items-center font-bold text-white text-lg list-none outline-none">
+            <span>Bagaimana cara menghubungi staff jika ada masalah?</span>
+            <span class="transition-transform duration-300 group-open:rotate-180 text-purple-400">
+              <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-slate-400 mt-4 leading-relaxed">
+            Cara termudah dan tercepat untuk mendapatkan bantuan adalah dengan bergabung ke <a href="https://discord.gg/x9TpXCgP7S" target="_blank" rel="noopener noreferrer" class="text-purple-400 hover:text-purple-300 underline transition-colors">server Discord resmi kami</a> dan membuat tiket (Open Ticket). Tim Staff akan merespons secepat mungkin.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Store Banner -->
+  <section class="py-12">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="bg-gradient-to-r from-purple-900/50 to-indigo-900/50 rounded-3xl p-8 md:p-12 border border-purple-500/30 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+        <div class="hidden md:block absolute -right-10 -top-10 w-40 h-40 bg-purple-500/20 blur-[60px] rounded-full"></div>
+        <div class="relative z-10 text-center md:text-left flex-1">
+          <div class="inline-flex items-center gap-2 text-purple-300 font-semibold mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            Dukung Server Kami
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Upgrade Pengalamanmu</h2>
+          <p class="text-slate-300 max-w-xl">Dapatkan rank eksklusif, kosmetik keren, dan keuntungan in-game lainnya. Seluruh dana digunakan untuk membayar biaya hosting dan pengembangan server.</p>
+        </div>
+        <div class="relative z-10 flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+          <a href="/webstore" class="flex-1 shrink-0 bg-purple-600 hover:bg-purple-500 text-white border border-purple-500/50 px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-[0_0_15px_rgba(147,51,234,0.4)] whitespace-nowrap text-center">
+            Kunjungi Store
+          </a>
+          <a href="https://trakteer.id/nightnetwork/gift" target="_blank" rel="noopener noreferrer" class="flex-1 shrink-0 bg-[#be1e2d] text-white flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-lg hover:bg-[#a31926] transition-colors shadow-xl shadow-red-500/20 whitespace-nowrap text-center">
+            Trakteer Kami
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<script>
+  import { serverIp } from '../config/server.ts';
+
+  // Copy IP button
+  const copyBtn = document.getElementById('copy-btn')!;
+  const iconCopy = document.getElementById('icon-copy')!;
+  const iconCheck = document.getElementById('icon-check')!;
+
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(serverIp).then(() => {
+      iconCopy.classList.add('hidden');
+      iconCheck.classList.remove('hidden');
+      setTimeout(() => {
+        iconCheck.classList.add('hidden');
+        iconCopy.classList.remove('hidden');
+      }, 2000);
+    }).catch(err => console.error('Gagal menyalin:', err));
+  });
+
+  // Player count
+  async function fetchPlayerCount() {
+    const playerSpan = document.getElementById('player-count')!;
+    const statusDot = document.getElementById('status-dot')!;
+    try {
+      const response = await fetch(`https://api.mcsrvstat.us/2/${serverIp}`);
+      const data = await response.json();
+      if (data.online) {
+        playerSpan.innerHTML = `<strong>${data.players.online}</strong> Pemain Sedang Online`;
+        statusDot.classList.replace('bg-yellow-500', 'bg-green-500');
+        statusDot.classList.add('animate-pulse');
+      } else {
+        playerSpan.innerHTML = 'Server Sedang Offline / Maintenance';
+        statusDot.classList.replace('bg-yellow-500', 'bg-red-500');
+        statusDot.classList.remove('animate-pulse');
+      }
+    } catch {
+      playerSpan.innerHTML = 'Gagal memuat status server';
+      statusDot.classList.replace('bg-yellow-500', 'bg-slate-500');
+      statusDot.classList.remove('animate-pulse');
+    }
+  }
+
+  fetchPlayerCount();
+  setInterval(fetchPlayerCount, 60000);
+</script>

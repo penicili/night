@@ -1,0 +1,108 @@
+---
+export const prerender = false;
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { db } from '../../../lib/db';
+
+let error = '';
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+
+  const id       = (form.get('id') as string).trim().toLowerCase().replace(/\s+/g, '-');
+  const tier     = parseInt(form.get('tier') as string);
+  const name     = (form.get('name') as string).trim();
+  const price    = (form.get('price') as string).trim();
+  const theme    = form.get('theme') as string;
+  const is_free  = form.get('is_free') === 'on';
+  const is_highest = form.get('is_highest') === 'on';
+  const benefits = (form.get('benefits') as string).split('\n').map(s => s.trim()).filter(Boolean);
+  const commands = (form.get('commands') as string).split('\n').map(s => s.trim()).filter(Boolean);
+
+  try {
+    await db`
+      INSERT INTO ranks (id, tier, name, price, theme, is_free, is_highest, benefits, commands)
+      VALUES (${id}, ${tier}, ${name}, ${price}, ${theme}, ${is_free}, ${is_highest}, ${benefits}, ${commands})
+    `;
+    return Astro.redirect('/admin/ranks');
+  } catch (e: any) {
+    error = e.message ?? 'Terjadi kesalahan.';
+  }
+}
+
+const themes = ['slate', 'blue', 'violet', 'purple', 'fuchsia', 'amber', 'celestial'];
+---
+
+<AdminLayout title="Tambah Rank" page="ranks">
+
+  <div class="max-w-2xl">
+    <a href="/admin/ranks" class="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-300 mb-6 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Kembali
+    </a>
+
+    {error && (
+      <div class="mb-4 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400">{error}</div>
+    )}
+
+    <form method="POST" class="bg-cardbg border border-white/6 rounded-xl p-6 space-y-5">
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1.5">ID <span class="text-slate-600">(slug)</span></label>
+          <input name="id" required placeholder="eclipse" class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-purple-500/60 transition-colors" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1.5">Tier</label>
+          <input name="tier" type="number" min="1" required placeholder="1" class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-purple-500/60 transition-colors" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1.5">Nama</label>
+          <input name="name" required placeholder="ECLIPSE" class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-purple-500/60 transition-colors" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1.5">Harga</label>
+          <input name="price" required placeholder="Rp 45.000" class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-purple-500/60 transition-colors" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-slate-400 mb-1.5">Theme</label>
+        <select name="theme" class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/60 transition-colors">
+          {themes.map(t => <option value={t}>{t}</option>)}
+        </select>
+      </div>
+
+      <div class="flex gap-6">
+        <label class="flex items-center gap-2 text-sm text-slate-400 cursor-pointer">
+          <input name="is_free" type="checkbox" class="rounded" />
+          Free
+        </label>
+        <label class="flex items-center gap-2 text-sm text-slate-400 cursor-pointer">
+          <input name="is_highest" type="checkbox" class="rounded" />
+          Highest
+        </label>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-slate-400 mb-1.5">Benefits <span class="text-slate-600">(satu per baris)</span></label>
+        <textarea name="benefits" rows="5" placeholder={"Claim: 1.000 Block\nSethome: 3\nKit Member"} class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-purple-500/60 transition-colors resize-none"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-slate-400 mb-1.5">Commands <span class="text-slate-600">(satu per baris)</span></label>
+        <textarea name="commands" rows="4" placeholder={"/spawn → kembali ke spawn\n/sethome & /home → set & teleport rumah"} class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-purple-500/60 transition-colors resize-none"></textarea>
+      </div>
+
+      <div class="flex justify-end pt-2">
+        <button type="submit" class="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium rounded-lg transition-colors">
+          Simpan Rank
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</AdminLayout>

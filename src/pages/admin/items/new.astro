@@ -1,0 +1,112 @@
+---
+export const prerender = false;
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { db } from '../../../lib/db';
+
+let error = '';
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+
+  const id          = (form.get('id') as string).trim().toLowerCase().replace(/\s+/g, '-');
+  const name        = (form.get('name') as string).trim();
+  const description = (form.get('description') as string).trim();
+  const color       = form.get('color') as string;
+  const coming_soon = form.get('coming_soon') === 'on';
+
+  const tierLabels = form.getAll('tier_label') as string[];
+  const tierPrices = form.getAll('tier_price') as string[];
+  const tiers = tierLabels.map((label, i) => ({ label, price: tierPrices[i] })).filter(t => t.label);
+
+  try {
+    await db`
+      INSERT INTO items (id, name, description, color, coming_soon, tiers)
+      VALUES (${id}, ${name}, ${description}, ${color}, ${coming_soon}, ${JSON.stringify(tiers)})
+    `;
+    return Astro.redirect('/admin/items');
+  } catch (e: any) {
+    error = e.message ?? 'Terjadi kesalahan.';
+  }
+}
+
+const colors = ['red', 'purple', 'cyan', 'orange', 'blue', 'green'];
+---
+
+<AdminLayout title="Tambah Item" page="items">
+
+  <div class="max-w-2xl">
+    <a href="/admin/items" class="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-300 mb-6 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Kembali
+    </a>
+
+    {error && (
+      <div class="mb-4 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400">{error}</div>
+    )}
+
+    <form method="POST" class="bg-cardbg border border-white/6 rounded-xl p-6 space-y-5">
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1.5">ID <span class="text-slate-600">(slug)</span></label>
+          <input name="id" required placeholder="seasonal-key" class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-blue-500/60 transition-colors" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1.5">Warna</label>
+          <select name="color" class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500/60 transition-colors">
+            {colors.map(c => <option value={c}>{c}</option>)}
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-slate-400 mb-1.5">Nama</label>
+        <input name="name" required placeholder="Seasonal Key" class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-blue-500/60 transition-colors" />
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-slate-400 mb-1.5">Deskripsi</label>
+        <textarea name="description" rows="3" required placeholder="Gunakan key ini untuk membuka seasonal crate." class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-blue-500/60 transition-colors resize-none"></textarea>
+      </div>
+
+      <label class="flex items-center gap-2 text-sm text-slate-400 cursor-pointer">
+        <input name="coming_soon" type="checkbox" class="rounded" />
+        Coming Soon
+      </label>
+
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <label class="text-xs font-medium text-slate-400">Tiers</label>
+          <button type="button" id="add-tier" class="text-xs text-blue-400 hover:text-blue-300 transition-colors">+ Tambah Tier</button>
+        </div>
+        <div id="tiers" class="space-y-2">
+          <div class="tier-row grid grid-cols-2 gap-2">
+            <input name="tier_label" placeholder="1x Key" class="bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-blue-500/60 transition-colors" />
+            <input name="tier_price" placeholder="Rp 2.000" class="bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-blue-500/60 transition-colors" />
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-2">
+        <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-lg transition-colors">
+          Simpan Item
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</AdminLayout>
+
+<script>
+  document.getElementById('add-tier')?.addEventListener('click', () => {
+    const container = document.getElementById('tiers')!;
+    const row = document.createElement('div');
+    row.className = 'tier-row grid grid-cols-2 gap-2';
+    row.innerHTML = `
+      <input name="tier_label" placeholder="1x Key" class="bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-blue-500/60 transition-colors" />
+      <input name="tier_price" placeholder="Rp 2.000" class="bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-blue-500/60 transition-colors" />
+    `;
+    container.appendChild(row);
+  });
+</script>

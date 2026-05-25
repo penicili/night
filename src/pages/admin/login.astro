@@ -1,0 +1,114 @@
+---
+export const prerender = false;
+import "../../styles/global.css";
+import { createSessionToken } from "../../lib/auth";
+import { verifySessionToken } from "../../lib/auth";
+
+if (Astro.request.method === "POST") {
+  // ambil data dari form
+  const data = await Astro.request.formData();
+  const password = data.get("password");
+
+  // match password
+
+  if (password !== import.meta.env.ADMIN_PASSWORD) {
+    // kalau salah, redirect ke halaman yang sama dengan query error
+    return Astro.redirect("/admin/login?error=1");
+  } else {
+    //  kalau bener buat token, set cookie dan redirect
+    const token = await createSessionToken();
+    // set cookie
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: "/admin",
+        "Set-Cookie": `admin_session=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Lax`,
+      },
+    });
+  }
+}
+
+const error = Astro.url.searchParams.get("error");
+
+// kalau udah login, redirect ke dashboard
+const token = Astro.cookies.get("admin_session")?.value as string;
+const valid = await verifySessionToken(token);
+if (valid) {
+  return Astro.redirect("/admin");
+}
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.jpeg" />
+    <title>Login — Admin Night Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-darkerbg text-slate-200 antialiased min-h-screen flex items-center justify-center selection:bg-purple-600 selection:text-white"
+  >
+    <div class="relative w-full max-w-sm px-4">
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-purple-600/10 blur-[80px] rounded-full pointer-events-none"
+      >
+      </div>
+
+      <div
+        class="relative bg-cardbg border border-white/8 rounded-2xl p-8 shadow-2xl"
+      >
+        <div class="flex flex-col items-center mb-8">
+          <div
+            class="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-purple-600/40 mb-4"
+          >
+            N
+          </div>
+          <h1 class="text-lg font-bold text-white">Night Network</h1>
+          <p class="text-xs text-slate-500 mt-1 tracking-widest uppercase">
+            Admin Panel
+          </p>
+        </div>
+
+        {
+          error && (
+            <div class="mb-4 px-4 py-2.5 bg-red-500/10 border border-red-500/20 rounded-lg text-xs text-red-400 text-center">
+              Password salah. Coba lagi.
+            </div>
+          )
+        }
+
+        <form method="POST" class="space-y-4">
+          <div>
+            <label
+              for="password"
+              class="block text-xs font-medium text-slate-400 mb-1.5"
+              >Password</label
+            >
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="••••••••"
+              required
+              autofocus
+              class="w-full bg-darkerbg border border-white/8 rounded-lg px-4 py-2.5 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-purple-500/60 focus:bg-darkbg transition-colors"
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold rounded-lg transition-colors shadow-lg shadow-purple-600/20"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

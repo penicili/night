@@ -4,12 +4,15 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import RankCard from '../components/RankCard.astro';
 import ItemCard from '../components/ItemCard.astro';
-import ranks from '../data/ranks.json';
-import items from '../data/items.json';
 import { waNumber, waNumberDev, waGreetOwner, waGreetDev } from '../config/store.ts';
+import { db } from '../lib/db';
 
 const waOwnerHref = `https://wa.me/${waNumber}?text=${encodeURIComponent(waGreetOwner)}`;
 const waDevHref   = `https://wa.me/${waNumberDev}?text=${encodeURIComponent(waGreetDev)}`;
+
+// fetch ranks and items form database
+const ranks = await db`SELECT * FROM ranks ORDER BY tier ASC`;
+const items = await db`SELECT * FROM items ORDER BY name ASC`;
 ---
 
 <Layout title="Web Store | Night Network">

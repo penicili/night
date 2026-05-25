@@ -8,7 +8,7 @@ interface Item {
   id: string;
   name: string;
   description: string;
-  comingSoon: boolean;
+  coming_soon: boolean;
   color: string;
   tiers: Tier[];
 }
@@ -29,18 +29,18 @@ const themes: Record<string, { hover: string; badgeBg: string; badgeText: string
 };
 
 const t = themes[item.color] ?? themes.green;
-const priceClass = item.comingSoon ? t.priceMuted : t.priceActive;
-const labelClass = item.comingSoon ? 'text-slate-500' : 'text-slate-300';
-const titleClass = item.comingSoon ? 'text-white/50' : 'text-white';
-const descClass  = item.comingSoon ? 'text-slate-600' : 'text-slate-400';
+const priceClass = item.coming_soon ? t.priceMuted : t.priceActive;
+const labelClass = item.coming_soon ? 'text-slate-500' : 'text-slate-300';
+const titleClass = item.coming_soon ? 'text-white/50' : 'text-white';
+const descClass  = item.coming_soon ? 'text-slate-600' : 'text-slate-400';
 ---
 
 <div class={`bg-cardbg border rounded-2xl p-6 relative overflow-hidden transition-colors ${
-  item.comingSoon
+  item.coming_soon
     ? 'border-white/5 opacity-60'
     : `border-white/10 ${t.hover}`
 }`}>
-  {item.comingSoon && (
+  {item.coming_soon && (
     <span class={`absolute top-3 right-3 px-2 py-1 ${t.badgeBg} ${t.badgeText} border ${t.badgeBorder} rounded text-[10px] font-bold uppercase animate-pulse`}>Coming Soon</span>
   )}
   <h3 class={`text-xl font-bold mb-2 ${titleClass}`}>{item.name}</h3>

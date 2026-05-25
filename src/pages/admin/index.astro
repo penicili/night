@@ -1,16 +1,17 @@
 ---
 export const prerender = false;
 import AdminLayout from '../../layouts/AdminLayout.astro';
+import { db } from '../../lib/db';
 
-// TODO: fetch data dari DB
-// import { db } from '../../lib/db';
-// const ranks = await db`SELECT * FROM ranks`;
-// const items = await db`SELECT * FROM items`;
+const ranks = await db`SELECT * FROM ranks`;
+const items = await db`SELECT * FROM items`;
 
-const totalRanks  = 0;
-const totalItems  = 0;
-const activeItems = 0;
-const comingSoon  = 0;
+
+const totalRanks  = ranks.length;
+const totalItems  = items.length;
+console.log(items);
+const activeItems = items.filter(i => i.coming_soon === false).length;
+const comingSoon   = totalItems - activeItems;
 ---
 
 <AdminLayout title="Dashboard" page="dashboard">
@@ -38,27 +39,6 @@ const comingSoon  = 0;
       <div class="text-xs text-slate-500 mt-1">{activeItems} aktif · {comingSoon} coming soon</div>
     </div>
 
-    <div class="bg-cardbg border border-white/[0.06] rounded-xl p-5">
-      <div class="flex items-center justify-between mb-3">
-        <span class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Rank Terendah</span>
-        <div class="w-7 h-7 bg-slate-500/15 text-slate-400 rounded-lg flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-        </div>
-      </div>
-      <!-- TODO: ranks[0].name -->
-      <div class="text-base font-bold text-white font-mono">—</div>
-    </div>
-
-    <div class="bg-cardbg border border-white/[0.06] rounded-xl p-5">
-      <div class="flex items-center justify-between mb-3">
-        <span class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Rank Tertinggi</span>
-        <div class="w-7 h-7 bg-amber-500/15 text-amber-400 rounded-lg flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
-      </div>
-      <!-- TODO: ranks.at(-1).name -->
-      <div class="text-base font-bold text-white font-mono">—</div>
-    </div>
 
   </div>
 

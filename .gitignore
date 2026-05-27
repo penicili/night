@@ -27,4 +27,5 @@ pnpm-debug.log*
 .netlify
 # db seeder
 seed-users.mjs
-creatuserstable.sql
+*.sql
+guide-seed.mjs

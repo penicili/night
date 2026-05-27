@@ -1,11 +1,89 @@
 ---
+export const prerender = false;
 import Layout from '../layouts/Layout.astro';
+import { db } from '../lib/db';
+
+// Query semua sections + commands sekaligus
+const rows = await db`
+  SELECT
+    s.id   AS section_id, s.title, s.tip, s.color, s.is_premium,
+    c.id   AS cmd_id, c.command, c.description
+  FROM guide_sections s
+  LEFT JOIN guide_commands c ON c.section_id = s.id
+  ORDER BY s.sort_order ASC, c.sort_order ASC
+`;
+
+// Group commands ke dalam section masing-masing
+const sectionsMap = new Map<number, {
+  id: number; title: string; tip: string | null;
+  color: string; is_premium: boolean;
+  commands: { id: number; command: string; description: string }[];
+}>();
+
+for (const row of rows) {
+  if (!sectionsMap.has(row.section_id)) {
+    sectionsMap.set(row.section_id, {
+      id: row.section_id, title: row.title, tip: row.tip,
+      color: row.color, is_premium: row.is_premium, commands: [],
+    });
+  }
+  if (row.cmd_id) {
+    sectionsMap.get(row.section_id)!.commands.push({
+      id: row.cmd_id, command: row.command, description: row.description,
+    });
+  }
+}
+const sections = [...sectionsMap.values()];
+
+// Color map — harus literal supaya Tailwind include class-nya
+const colorMap: Record<string, {
+  border: string; hover: string; iconBg: string;
+  tipBg: string; tipBorder: string; tipText: string;
+  badge: string;
+}> = {
+  green: {
+    border:    'border-white/10',
+    hover:     'hover:border-green-500/30',
+    iconBg:    'bg-green-600/20 text-green-400',
+    tipBg:     'bg-green-500/10',
+    tipBorder: 'border-green-500/20',
+    tipText:   'text-green-300',
+    badge:     'bg-green-500/20 text-green-400 border-green-500/30',
+  },
+  purple: {
+    border:    'border-white/10',
+    hover:     'hover:border-purple-500/30',
+    iconBg:    'bg-purple-600/20 text-purple-400',
+    tipBg:     'bg-purple-500/10',
+    tipBorder: 'border-purple-500/20',
+    tipText:   'text-purple-300',
+    badge:     'bg-purple-500/20 text-purple-400 border-purple-500/30',
+  },
+  yellow: {
+    border:    'border-yellow-500/30',
+    hover:     'hover:border-yellow-500/60',
+    iconBg:    'bg-yellow-600/20 text-yellow-400',
+    tipBg:     'bg-yellow-500/10',
+    tipBorder: 'border-yellow-500/20',
+    tipText:   'text-yellow-300',
+    badge:     'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+  },
+  blue: {
+    border:    'border-white/10',
+    hover:     'hover:border-blue-500/30',
+    iconBg:    'bg-blue-600/20 text-blue-400',
+    tipBg:     'bg-blue-500/10',
+    tipBorder: 'border-blue-500/20',
+    tipText:   'text-blue-300',
+    badge:     'bg-blue-500/20 text-blue-400 border-blue-500/30',
+  },
+};
 ---
 
 <Layout title="Panduan Command | Night Network" bodyClass="flex flex-col min-h-screen">
 
   <!-- Simple Navbar -->
-  <nav class="w-full z-50 bg-[#0a0a14]/90 backdrop-blur-md border-b border-white/10 py-4 sticky top-0">
+  <nav class="w-full z-50 bg-darkbg/90 backdrop-blur-md border-b border-white/10 py-4 sticky top-0">
     <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
       <a href="/" class="flex items-center gap-2 cursor-pointer group">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 group-hover:text-white transition-colors"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
@@ -18,9 +96,9 @@ import Layout from '../layouts/Layout.astro';
   </nav>
 
   <!-- Main Content -->
-  <main class="flex-grow pt-12 pb-24 relative">
+  <main class="grow pt-12 pb-24 relative">
     <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[400px] bg-purple-600/10 blur-[100px] rounded-full"></div>
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-100 bg-purple-600/10 blur-[100px] rounded-full"></div>
       <div class="absolute inset-0 minecraft-grid opacity-30 z-0"></div>
     </div>
 
@@ -33,155 +111,42 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        {sections.map(section => {
+          const c = colorMap[section.color] ?? colorMap.green;
+          const tips = section.tip ? section.tip.split('|') : [];
+          return (
+            <div class={`bg-cardbg border ${section.is_premium ? c.border : 'border-white/10'} ${c.hover} rounded-2xl p-6 md:p-8 transition-colors relative overflow-hidden`}>
 
-        <!-- Claim Area -->
-        <div class="bg-cardbg border border-white/10 rounded-2xl p-6 md:p-8 hover:border-green-500/30 transition-colors">
-          <div class="flex items-center gap-3 mb-6 border-b border-white/5 pb-4">
-            <div class="bg-green-600/20 text-green-400 p-3 rounded-xl">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              {section.is_premium && (
+                <div class="absolute top-3 right-3">
+                  <span class={`px-2 py-1 ${c.badge} border rounded text-[10px] font-bold uppercase tracking-wider`}>⭐ Premium</span>
+                </div>
+              )}
+
+              <div class="flex items-center gap-3 mb-6 border-b border-white/5 pb-4">
+                <div class={`${c.iconBg} p-3 rounded-xl`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h2 class="text-2xl font-bold text-white">{section.title}</h2>
+              </div>
+
+              {tips.length > 0 && (
+                <div class={`${c.tipBg} border ${c.tipBorder} rounded-xl px-4 py-3 mb-5 text-sm ${c.tipText} space-y-2`}>
+                  {tips.map(tip => <p set:html={tip} />)}
+                </div>
+              )}
+
+              <ul class="space-y-4">
+                {section.commands.map(cmd => (
+                  <li>
+                    <div class="font-mono font-bold text-white mb-1"><code>{cmd.command}</code></div>
+                    <p class="text-sm text-slate-400">{cmd.description}</p>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <h2 class="text-2xl font-bold text-white">Claim Area (Proteksi)</h2>
-          </div>
-          <div class="bg-green-500/10 border border-green-500/20 rounded-xl px-4 py-3 mb-5 text-sm text-green-300 space-y-2">
-            <p><strong>Metode 1 (Fence & Sign):</strong> Kelilingi area dengan fence berbentuk persegi, pasang sign di pagar, tulis <code>[rp]</code> di baris pertama. Area terlindungi dari langit hingga bedrock.</p>
-            <p><strong>Metode 2 (Wand):</strong> Ketik <code>/rp wand</code>, klik kiri sudut pertama & klik kanan sudut kedua secara diagonal, lalu ketik <code>/rp claim &lt;NamaWilayah&gt;</code>.</p>
-          </div>
-          <ul class="space-y-4">
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp tutorial</code></div>
-              <p class="text-sm text-slate-400">Menampilkan panduan dasar di dalam chat game.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp wand</code></div>
-              <p class="text-sm text-slate-400">Memberikan tongkat sihir untuk menentukan batas wilayah.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp i</code> / <code>/rp info</code></div>
-              <p class="text-sm text-slate-400">Menampilkan informasi lengkap wilayah tempat kamu berdiri (pemilik, member, flag).</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp list</code></div>
-              <p class="text-sm text-slate-400">Melihat daftar semua wilayah yang kamu miliki.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp near</code></div>
-              <p class="text-sm text-slate-400">Menampilkan wilayah terdekat di sekitar posisimu.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp ?</code></div>
-              <p class="text-sm text-slate-400">Menampilkan semua daftar perintah yang tersedia untukmu.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp addmember &lt;Pemain&gt;</code></div>
-              <p class="text-sm text-slate-400">Menambahkan pemain lain sebagai anggota biasa — bisa berinteraksi di dalam wilayahmu.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp removemember &lt;Pemain&gt;</code></div>
-              <p class="text-sm text-slate-400">Menghapus pemain dari daftar anggota wilayah.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp addadmin &lt;Pemain&gt;</code></div>
-              <p class="text-sm text-slate-400">Menambahkan pemain sebagai administrator wilayah — akses penuh termasuk ubah pengaturan.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp removeadmin &lt;Pemain&gt;</code></div>
-              <p class="text-sm text-slate-400">Menghapus hak administrator dari pemain tersebut.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp kick &lt;Pemain&gt;</code></div>
-              <p class="text-sm text-slate-400">Mengusir pemain secara paksa keluar dari wilayahmu.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp flag &lt;NamaFlag&gt; &lt;Value&gt;</code></div>
-              <p class="text-sm text-slate-400">Mengubah aturan khusus seperti PvP, chest access, atau monster spawn. Contoh: <code>/rp flag pvp false</code>.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp flag info</code></div>
-              <p class="text-sm text-slate-400">Melihat status flags yang sedang aktif di wilayahmu.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp welcome &lt;Pesan&gt;</code></div>
-              <p class="text-sm text-slate-400">Mengatur pesan otomatis yang muncul saat pemain lain memasuki wilayahmu.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp rename &lt;NamaBaru&gt;</code></div>
-              <p class="text-sm text-slate-400">Mengubah nama wilayahmu.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rp delete</code></div>
-              <p class="text-sm text-slate-400">Menghapus klaim wilayah yang sedang kamu tempati.</p>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Menu & Utilities -->
-        <div class="bg-cardbg border border-white/10 rounded-2xl p-6 md:p-8 hover:border-purple-500/30 transition-colors">
-          <div class="flex items-center gap-3 mb-6 border-b border-white/5 pb-4">
-            <div class="bg-purple-600/20 text-purple-400 p-3 rounded-xl">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="9" x2="9" y1="21" y2="9"/></svg>
-            </div>
-            <h2 class="text-2xl font-bold text-white">Menu & Utilitas</h2>
-          </div>
-          <ul class="space-y-4">
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/sethome (nama)</code></div>
-              <p class="text-sm text-slate-400">Menyimpan lokasi tempat kamu berdiri sebagai titik rumah. Contoh: <code>/sethome base</code>.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/home (nama)</code></div>
-              <p class="text-sm text-slate-400">Teleport ke titik rumah yang sudah disimpan. Contoh: <code>/home base</code>.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/rank</code></div>
-              <p class="text-sm text-slate-400">Melihat informasi tentang rank dan keuntungannya di server Night Network.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/key</code></div>
-              <p class="text-sm text-slate-400">Membuka menu untuk membeli Key Gacha (Crate) menggunakan uang in-game.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/buyspawner</code></div>
-              <p class="text-sm text-slate-400">Membuka menu untuk membeli Smart Spawner untuk farming/AFK yang efisien.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/pv (angka)</code></div>
-              <p class="text-sm text-slate-400">Membuka Player Vault, yaitu penyimpanan/chest pribadi yang aman yang bisa diakses di mana saja. Contoh: <code>/pv 1</code>.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/bounty</code></div>
-              <p class="text-sm text-slate-400">Membuka menu bounty untuk memasang harga sayembara (buronan) pada pemain lain atau melihat daftar buronan.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/atm</code></div>
-              <p class="text-sm text-slate-400">Membuka menu ATM yang memungkinkan kamu untuk menyimpan atau menarik uang in-game secara aman.</p>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Player Warp -->
-        <div class="bg-cardbg border border-yellow-500/30 rounded-2xl p-6 md:p-8 hover:border-yellow-500/60 transition-colors relative overflow-hidden">
-          <div class="absolute top-3 right-3">
-            <span class="px-2 py-1 bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 rounded text-[10px] font-bold uppercase tracking-wider">⭐ Premium</span>
-          </div>
-          <div class="flex items-center gap-3 mb-6 border-b border-white/5 pb-4">
-            <div class="bg-yellow-600/20 text-yellow-400 p-3 rounded-xl">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
-            </div>
-            <h2 class="text-2xl font-bold text-white">Player Warp</h2>
-          </div>
-          <p class="text-sm text-slate-300 mb-4">Pwarp adalah titik teleportasi buatan pemain yang dapat diakses oleh pemain lain di server (biasanya digunakan untuk toko pemain atau tempat wisata).</p>
-          <ul class="space-y-4">
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/pwarp create (nama warp)</code></div>
-              <p class="text-sm text-slate-400">Membuat titik warp baru di lokasi tempat kamu berdiri dengan nama yang ditentukan.</p>
-            </li>
-            <li>
-              <div class="font-mono font-bold text-white mb-1"><code>/pwarp delete (nama warp)</code></div>
-              <p class="text-sm text-slate-400">Menghapus player warp yang sebelumnya telah kamu buat.</p>
-            </li>
-          </ul>
-        </div>
-
+          );
+        })}
       </div>
     </div>
   </main>

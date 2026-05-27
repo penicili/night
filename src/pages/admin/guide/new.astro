@@ -1,0 +1,80 @@
+---
+export const prerender = false;
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { db } from '../../../lib/db';
+
+let error = '';
+
+if (Astro.request.method === 'POST') {
+  const form       = await Astro.request.formData();
+  const title      = (form.get('title') as string).trim();
+  const tip        = (form.get('tip') as string).trim() || null;
+  const color      = form.get('color') as string;
+  const is_premium = form.get('is_premium') === 'on';
+  const sort_order = parseInt(form.get('sort_order') as string) || 0;
+
+  try {
+    const [s] = await db`
+      INSERT INTO guide_sections (title, tip, color, is_premium, sort_order)
+      VALUES (${title}, ${tip}, ${color}, ${is_premium}, ${sort_order})
+      RETURNING id
+    `;
+    return Astro.redirect(`/admin/guide/${s.id}`);
+  } catch (e: any) {
+    error = e.message ?? 'Terjadi kesalahan.';
+  }
+}
+
+const colors = ['green', 'purple', 'yellow', 'blue'];
+---
+
+<AdminLayout title="Tambah Section" page="guide">
+  <div class="max-w-xl">
+    <a href="/admin/guide" class="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-300 mb-6 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Kembali
+    </a>
+
+    {error && <div class="mb-4 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400">{error}</div>}
+
+    <form method="POST" class="bg-cardbg border border-white/6 rounded-xl p-6 space-y-5">
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1.5">Title</label>
+          <input name="title" required placeholder="Claim Area" class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-purple-500/60 transition-colors" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1.5">Urutan</label>
+          <input name="sort_order" type="number" min="0" placeholder="1" class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-purple-500/60 transition-colors" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1.5">Warna</label>
+          <select name="color" class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/60 transition-colors">
+            {colors.map(c => <option value={c}>{c}</option>)}
+          </select>
+        </div>
+        <div class="flex items-end pb-2">
+          <label class="flex items-center gap-2 text-sm text-slate-400 cursor-pointer">
+            <input name="is_premium" type="checkbox" class="rounded" />
+            Premium
+          </label>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-slate-400 mb-1.5">Tip <span class="text-slate-600">(opsional, pisah paragraf dengan |)</span></label>
+        <textarea name="tip" rows="3" placeholder="Metode 1: ...|Metode 2: ..." class="w-full bg-darkerbg border border-white/8 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-purple-500/60 transition-colors resize-none"></textarea>
+      </div>
+
+      <div class="flex justify-end pt-2">
+        <button type="submit" class="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium rounded-lg transition-colors">
+          Simpan & Lanjut Edit Commands
+        </button>
+      </div>
+    </form>
+  </div>
+</AdminLayout>

@@ -7,12 +7,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
 
   if (pathname.startsWith('/admin') && !PUBLIC_ADMIN_PATHS.includes(pathname)) {
-    const token = context.cookies.get('admin_session')?.value;
+    const token   = context.cookies.get('admin_session')?.value;
+    const payload = token ? await verifySessionToken(token) : null;
 
-    const valid = token ? await verifySessionToken(token) : false;
-
-    if (!valid) {
+    if (!payload) {
       return context.redirect('/admin/login');
+    }else if (payload.role !== 'admin'){
+      return context.redirect('/admin/login?roleError=1');
     }
   }
 

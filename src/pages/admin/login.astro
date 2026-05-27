@@ -1,39 +1,42 @@
 ---
 export const prerender = false;
 import "../../styles/global.css";
-import { createSessionToken } from "../../lib/auth";
-import { verifySessionToken } from "../../lib/auth";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { createSessionToken, verifySessionToken } from "../../lib/auth";
+import { db } from "../../lib/db";
+import bcrypt from "bcryptjs";
 
 if (Astro.request.method === "POST") {
-  // ambil data dari form
-  const data = await Astro.request.formData();
-  const password = data.get("password");
+  const data     = await Astro.request.formData();
+  const username = (data.get("username") as string)?.trim();
+  const password = data.get("password") as string;
 
-  // match password
+  // cari user di DB
+  const [user] = await db`SELECT * FROM users WHERE username = ${username}`;
 
-  if (password !== import.meta.env.ADMIN_PASSWORD) {
-    // kalau salah, redirect ke halaman yang sama dengan query error
-    return Astro.redirect("/admin/login?error=1");
-  } else {
-    //  kalau bener buat token, set cookie dan redirect
-    const token = await createSessionToken();
-    // set cookie
-    return new Response(null, {
-      status: 302,
-      headers: {
-        Location: "/admin",
-        "Set-Cookie": `admin_session=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Lax`,
-      },
-    });
+  // verifikasi password
+  const valid = user && await bcrypt.compare(password, user.password_hash);
+
+  if (!valid) {
+    return Astro.redirect("/admin/login?passwordError=1");
   }
+
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: "/admin",
+      "Set-Cookie": `admin_session=${await createSessionToken(user.id, user.username, user.role)}; HttpOnly; Path=/; Max-Age=86400; SameSite=Lax`,
+    },
+  });
 }
 
-const error = Astro.url.searchParams.get("error");
+const passwordError = Astro.url.searchParams.get("passwordError") === "1";
+const roleError = Astro.url.searchParams.get("roleError") === "1";  
 
 // kalau udah login, redirect ke dashboard
-const token = Astro.cookies.get("admin_session")?.value as string;
-const valid = await verifySessionToken(token);
-if (valid) {
+const existingToken = Astro.cookies.get("admin_session")?.value ?? '';
+const existingPayload = await verifySessionToken(existingToken);
+if (existingPayload?.role === 'admin') {
   return Astro.redirect("/admin");
 }
 ---
@@ -77,14 +80,37 @@ if (valid) {
         </div>
 
         {
-          error && (
+          passwordError && (
             <div class="mb-4 px-4 py-2.5 bg-red-500/10 border border-red-500/20 rounded-lg text-xs text-red-400 text-center">
               Password salah. Coba lagi.
             </div>
           )
         }
+        {
+          roleError && (
+            <div class="mb-4 px-4 py-2.5 bg-red-500/10 border border-red-500/20 rounded-lg text-xs text-red-400 text-center">
+              Kamu tidak punya akses ke admin panel.
+            </div>
+          )
+        }
 
         <form method="POST" class="space-y-4">
+          <div>
+            <label
+              for="username"
+              class="block text-xs font-medium text-slate-400 mb-1.5"
+              >Username</label
+            >
+            <input
+              id="username"
+              type="text"
+              name="username"
+              placeholder="admin"
+              required
+              autofocus
+              class="w-full bg-darkerbg border border-white/8 rounded-lg px-4 py-2.5 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-purple-500/60 focus:bg-darkbg transition-colors"
+            />
+          </div>
           <div>
             <label
               for="password"
@@ -97,7 +123,6 @@ if (valid) {
               name="password"
               placeholder="••••••••"
               required
-              autofocus
               class="w-full bg-darkerbg border border-white/8 rounded-lg px-4 py-2.5 text-sm text-white placeholder-slate-700 focus:outline-none focus:border-purple-500/60 focus:bg-darkbg transition-colors"
             />
           </div>

@@ -67,7 +67,7 @@ const bedrockDeeplink = `minecraft://?addExternalServer=NightNetwork|${bedrockIp
     </div>
   </section>
 
-  <!-- About/Features Section -->
+  <!-- Why Us Section -->
   <section id="about" class="py-20 bg-darkerbg relative border-y border-white/5">
     <div class="container mx-auto px-6 md:px-12">
       <div class="text-center mb-16">
@@ -103,88 +103,67 @@ const bedrockDeeplink = `minecraft://?addExternalServer=NightNetwork|${bedrockIp
     </div>
   </section>
 
-  <!-- Game Modes Section -->
-  <section id="modes" class="py-24 relative">
+  <!-- Features Section -->
+  <section id="modes" class="py-20 bg-darkerbg relative border-y border-white/5">
     <div class="container mx-auto px-6 md:px-12">
-      <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-        <div>
-          <h2 class="text-3xl md:text-5xl font-black text-white mb-4">Mode <span class="text-purple-500">Permainan</span></h2>
-          <p class="text-slate-400 max-w-xl">Pilih petualanganmu. Nikmati mode Survival yang cozy, rasakan keseruan World Custom yang bebas, atau nantikan mode RPG epik kami!</p>
-        </div>
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Fitur <span class="text-purple-400">Utama</span></h2>
+        <div class="w-20 h-1 bg-purple-600 mx-auto rounded-full mb-4"></div>
+        <p class="text-slate-400 max-w-2xl mx-auto">Dirancang untuk player yang suka suasana nyaman, ekonomi aktif, dan progres yang tidak terlalu terburu-buru — tapi tetap ada tantangannya.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Survival -->
-        <div class="group relative rounded-3xl overflow-hidden bg-cardbg border border-white/10 min-h-[380px] sm:min-h-[420px] h-full flex flex-col justify-end p-6 md:p-8">
-          <div class="absolute inset-0 bg-gradient-to-t from-darkbg via-darkbg/80 to-transparent z-10"></div>
-          <div class="absolute inset-0 bg-green-900/30 opacity-50 group-hover:scale-105 transition-transform duration-500"></div>
-          <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-green-500/20 via-transparent to-transparent"></div>
-          <div class="relative z-20 mt-auto">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="bg-green-500 p-2 rounded-lg text-white shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              </div>
-              <h3 class="text-2xl md:text-3xl font-bold text-white leading-tight">Survival</h3>
-            </div>
-            <p class="text-slate-300 mb-6 max-w-md text-sm md:text-base">Mengambil tema <strong>eco dan cozy</strong>, di mana kamu bisa bersantai dan main event-event yang seru, serta menikmati berbagai event menarik lainnya!</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-white/10 rounded-full text-xs font-medium text-white border border-white/5 whitespace-nowrap">Eco & Cozy</span>
-              <span class="px-3 py-1 bg-white/10 rounded-full text-xs font-medium text-white border border-white/5 whitespace-nowrap">Keep Inventory</span>
-              <span class="px-3 py-1 bg-white/10 rounded-full text-xs font-medium text-white border border-white/5 whitespace-nowrap">Mini Events</span>
-            </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white/5 border border-white/5 p-8 rounded-2xl hover:-translate-y-2 transition-all duration-300 hover:border-green-500/30 group">
+          <div class="w-14 h-14 bg-green-600/20 text-green-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-green-600 group-hover:text-white transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
+          <h3 class="text-xl font-bold text-white mb-3">Survival Cozy</h3>
+          <p class="text-slate-400 leading-relaxed">Nikmati survival santai dengan suasana yang ramah — cocok untuk membangun rumah, farming, mining, dan eksplorasi tanpa tekanan.</p>
         </div>
 
-        <!-- World Custom -->
-        <div class="group relative rounded-3xl overflow-hidden bg-cardbg border border-white/5 min-h-[380px] sm:min-h-[420px] h-full flex flex-col justify-end p-6 md:p-8 opacity-80 hover:opacity-100 transition-opacity">
-          <div class="absolute inset-0 bg-gradient-to-t from-darkbg via-darkbg/90 to-darkbg/60 z-10"></div>
-          <div class="absolute inset-0 bg-black/40 z-[15] backdrop-blur-sm flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/50 mb-2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span class="text-white/70 font-bold tracking-wider uppercase text-sm text-center px-4">Sedang Dalam Pengembangan</span>
+        <div class="bg-white/5 border border-white/5 p-8 rounded-2xl hover:-translate-y-2 transition-all duration-300 hover:border-yellow-500/30 group">
+          <div class="w-14 h-14 bg-yellow-600/20 text-yellow-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-yellow-600 group-hover:text-white transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
-          <div class="relative z-20 mt-auto">
-            <div class="flex flex-wrap items-center gap-3 mb-4">
-              <div class="bg-red-600 p-2 rounded-lg text-white shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>
-              </div>
-              <h3 class="text-2xl md:text-3xl font-bold text-white leading-tight">World Custom</h3>
-              <span class="px-2 py-1 bg-red-600/30 text-red-400 border border-red-500/30 rounded text-[10px] font-bold uppercase animate-pulse">Coming Soon</span>
-            </div>
-            <p class="text-slate-400 mb-6 max-w-md text-sm md:text-base">Mode <strong>Anarki</strong> sejati! Dapatkan kebebasan penuh di mana kamu <strong>bebas grief</strong>, bisa menjadi <strong>superhero</strong>, dan bermain tanpa batasan aturan.</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-slate-400 whitespace-nowrap">Anarchy</span>
-              <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-slate-400 whitespace-nowrap">Bebas Grief</span>
-              <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-slate-400 whitespace-nowrap">Superhero</span>
-            </div>
-          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Sistem Ekonomi</h3>
+          <p class="text-slate-400 leading-relaxed">Kumpulkan uang dari aktivitas survival, jual beli item, berdagang dengan player lain, dan bangun kekayaanmu sendiri.</p>
         </div>
 
-        <!-- MMO RPG -->
-        <div class="group relative rounded-3xl overflow-hidden bg-cardbg border border-white/5 min-h-[380px] sm:min-h-[420px] h-full flex flex-col justify-end p-6 md:p-8 opacity-80 hover:opacity-100 transition-opacity">
-          <div class="absolute inset-0 bg-gradient-to-t from-darkbg via-darkbg/90 to-darkbg/60 z-10"></div>
-          <div class="absolute inset-0 bg-black/40 z-[15] backdrop-blur-sm flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/50 mb-2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span class="text-white/70 font-bold tracking-wider uppercase text-sm text-center px-4">Sedang Dalam Pengembangan</span>
+        <div class="bg-white/5 border border-white/5 p-8 rounded-2xl hover:-translate-y-2 transition-all duration-300 hover:border-red-500/30 group">
+          <div class="w-14 h-14 bg-red-600/20 text-red-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
           </div>
-          <div class="relative z-20 mt-auto">
-            <div class="flex flex-wrap items-center gap-3 mb-4">
-              <div class="bg-purple-600 p-2 rounded-lg text-white shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/><path d="M14.5 6.5L18 3h3v3l-3.5 3.5"/><path d="M5 14l4 4"/><path d="M7 17l-3 3"/><path d="M3 19l2 2"/></svg>
-              </div>
-              <h3 class="text-2xl md:text-3xl font-bold text-white leading-tight">MMO RPG</h3>
-              <span class="px-2 py-1 bg-purple-600/30 text-purple-400 border border-purple-500/30 rounded text-[10px] font-bold uppercase animate-pulse">Coming Soon</span>
-            </div>
-            <p class="text-slate-400 mb-6 max-w-md text-sm md:text-base">Jelajahi dunia dengan <strong>custom senjata legendaris</strong> dan lawan <strong>mob boss</strong> menarik. Selesaikan <em>Main Quests</em> cerita Night Network melalui <strong>NPC interaktif</strong>!</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-slate-400 whitespace-nowrap">Legendary Weapons</span>
-              <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-slate-400 whitespace-nowrap">Epic Bosses</span>
-              <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-slate-400 whitespace-nowrap">Story Quests</span>
-            </div>
+          <h3 class="text-xl font-bold text-white mb-3">Dungeon RPG</h3>
+          <p class="text-slate-400 leading-relaxed">Masuki dungeon berbahaya yang berisi monster, boss, dan hadiah langka. Cocok buat player yang suka tantangan di balik kesantaian.</p>
+        </div>
+
+        <div class="bg-white/5 border border-white/5 p-8 rounded-2xl hover:-translate-y-2 transition-all duration-300 hover:border-purple-500/30 group">
+          <div class="w-14 h-14 bg-purple-600/20 text-purple-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-purple-600 group-hover:text-white transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/><path d="M14.5 6.5L18 3h3v3l-3.5 3.5"/></svg>
           </div>
+          <h3 class="text-xl font-bold text-white mb-3">Senjata Berskill</h3>
+          <p class="text-slate-400 leading-relaxed">Gunakan senjata unik dengan kemampuan spesial — serangan area, efek elemen, lifesteal, stun, dash, dan skill keren lainnya.</p>
+        </div>
+
+        <div class="bg-white/5 border border-white/5 p-8 rounded-2xl hover:-translate-y-2 transition-all duration-300 hover:border-blue-500/30 group">
+          <div class="w-14 h-14 bg-blue-600/20 text-blue-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Loot & Progression</h3>
+          <p class="text-slate-400 leading-relaxed">Semakin aktif bermain, semakin besar peluang mendapatkan item langka, gear kuat, dan perlengkapan eksklusif.</p>
+        </div>
+
+        <div class="bg-white/5 border border-white/5 p-8 rounded-2xl hover:-translate-y-2 transition-all duration-300 hover:border-indigo-500/30 group">
+          <div class="w-14 h-14 bg-indigo-600/20 text-indigo-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Solo & Party</h3>
+          <p class="text-slate-400 leading-relaxed">Main sendiri tetap bisa, tapi masuk dungeon bareng teman bakal jauh lebih seru dan aman. Komunitas yang ramah untuk semua.</p>
         </div>
       </div>
     </div>
   </section>
+
 
   <!-- Guide Section -->
   <section id="guide" class="py-20 bg-[#0c0c16] relative border-t border-white/5">
